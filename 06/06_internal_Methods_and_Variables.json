@@ -1,0 +1,662 @@
+{
+  "name": "06 internal Methods and Variables",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        860
+      ],
+      "id": "196e46c8-8512-45b3-bfb2-5fb6442ccc6b",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// example address dta\nreturn [\n  {\n\tjson: {\n      \"userID\": 777,\n      \"name\": \"Miller\",\n      \"firstname\": \"John\",\n      \"address\": {\n        \"street\": \"Homelane\",\n        \"number\": \"99\",\n        \"postDirection\": 4711,\n        \"city\": \"London\"\n      },\n      \"dateOfBirth\": \"1990-01-01\",      \n\t  email: {\n\t    personal: 'john@home.com',\n\t\twork: 'john@museum.org'\n\t  },\n      homepage: \"https://john.miller.net/home\"\n\t}\n  },\n];\n\n  \n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        1420
+      ],
+      "id": "332e2468-9f74-4765-b6db-dc79ba72c523",
+      "name": "set example address",
+      "notesInFlow": true,
+      "notes": "addess data with nestesd array"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let dates = $jmespath($json.version, \"[*].date\" )\nreturn {dates};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -200
+      ],
+      "id": "44c75e81-d1ff-41cf-939b-aa143c8a76b6",
+      "name": "jmespath"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"read data\",\n      \"credentials\": false ,\n      \"version\": [\n        { \"number\": 1,\n          \"date\": \"2011-01-01\" \n        },\n        { \"number\": 2,\n          \"date\": \"2012-02-02\"  \n        }  \n      ],\n    }\n  },\n  {  \n    json: {    \n      \"name\": \"send e-mail\",\n      \"credentials\": true ,\n      \"version\": [\n        { \"number\": 4,\n          \"date\": \"2024-04-04\"  \n        },\n        { \"number\": 5,\n          \"date\": \"2025-05-05\"  \n        }\n      ]\n    } \n  }      \n];\nreturn arrayOfObjects\n\n  \n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        60
+      ],
+      "id": "1c041072-3e75-47cf-9242-3315e79f4a9e",
+      "name": "array of objects",
+      "notesInFlow": true,
+      "notes": "addess data with nestesd array"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f10ffc6-87d3-45ce-9a00-526f0369e665",
+              "name": "dates",
+              "value": "={{$jmespath($json.version, \"[*].date\" )}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        100
+      ],
+      "id": "0170439c-a294-4d2b-8142-67839d685ca1",
+      "name": "JMESPATH"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let dates = $jmespath($json.version, \"[:1].date\" )\nreturn {dates};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -60
+      ],
+      "id": "b4400a38-0b15-4c5e-bc9f-b85f6f171d92",
+      "name": "jmespath slice"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f10ffc6-87d3-45ce-9a00-526f0369e665",
+              "name": "dates",
+              "value": "={{$jmespath($json.version, \"[:1].date\" )}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        260
+      ],
+      "id": "65475b80-dcbc-4b57-b4f4-440eb82ae901",
+      "name": "JMESPATH Slice"
+    },
+    {
+      "parameters": {
+        "url": "https://zenquotes.io/api/quotes",
+        "options": {
+          "response": {}
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -200,
+        500
+      ],
+      "id": "9a36bdfd-c204-40e4-a659-b1a81e0217aa",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://zenquotes.io/api/quotes",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -200,
+        680
+      ],
+      "id": "140c76dd-3397-4188-83a8-18894d04110e",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "q, a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        240,
+        500
+      ],
+      "id": "65f36956-38b7-4d33-8088-7946580d76f6",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        40,
+        680
+      ],
+      "id": "087b92ab-1baa-4e83-adc2-a5d2bc02ede7",
+      "name": "Split Out1",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  \"workflow ID\": $workflow.id,\n  \"execcution ID\": $execution.id,\n  \"execution\": $execution, \n  \"node version\": $nodeVersion,\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        940
+      ],
+      "id": "59505600-0eb6-4d65-9372-17ebe31b9d01",
+      "name": "metadata",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e890dfc5-7481-43d9-8477-2aff53779361",
+              "name": "workflow ID",
+              "value": "={{$workflow.id}}",
+              "type": "string"
+            },
+            {
+              "id": "9af83c05-0a73-4b98-a781-f61eff47bd33",
+              "name": "execcution ID",
+              "value": "={{$execution.id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        940
+      ],
+      "id": "eb302ebf-8af9-4ee3-a439-3f0e5bed8406",
+      "name": "n8n Metadata"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    \"json\": {\n      \"team\": [\n        { \"name\": \"Alice\", \"age\": 20 },\n        { \"name\": \"Bob\", \"age\" : 30 },\n        { \"name\": \"Claire\", \"age\" : 40 }\n      ],\n      \"leader\" : \"Walter\",\n      \"deputy\" : \"\",      \n    }\n  }\n];\nreturn arrayOfObjects"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        1180
+      ],
+      "id": "e2009a55-725f-4a09-81fa-390d56e07af9",
+      "name": "convinientFunctionData",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ed446235-b17b-4e88-84ba-3f76916e3da9",
+              "name": "leader",
+              "value": "={{\"Hi \" + $ifEmpty($json.leader, \"there\")}}",
+              "type": "string"
+            },
+            {
+              "id": "f9b0d605-0bbd-47b2-aead-01e24e05f491",
+              "name": "deputy",
+              "value": "={{\"Hi \" + $ifEmpty($json.deputy, \"there\")}}",
+              "type": "string"
+            },
+            {
+              "id": "ece14eca-eb84-4b56-b511-e2b1692c2fcc",
+              "name": "max Age",
+              "value": "={{ $max($json.team[0].age, $json.team[1].age) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        1180
+      ],
+      "id": "395fe581-6828-4c3d-b3b9-6e77d766fe7b",
+      "name": "ConvinientFunction"
+    },
+    {
+      "parameters": {
+        "content": "### HTTP",
+        "height": 420,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        440
+      ],
+      "typeVersion": 1,
+      "id": "60eb5f2e-3479-4e1f-bf44-f982d170b0ac",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### JMESPATH",
+        "height": 640,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        -220
+      ],
+      "typeVersion": 1,
+      "id": "278cfb33-6486-4aed-b9a0-fadd969e76f6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### metadata",
+        "height": 220,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        880
+      ],
+      "typeVersion": 1,
+      "id": "929681cd-dea6-4037-9cb4-45626f7a1763",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### convinint function",
+        "height": 220,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "ac27f26d-c508-4b91-bf5b-2d5f39b15a93",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### data transformation function",
+        "height": 220,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "117b9168-1428-4066-8a9c-e4a4aa9958c7",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "34f518f5-4fdf-4cc4-9eeb-276bd788277c",
+              "name": "Is Email",
+              "value": "={{ $json.email.personal.isEmail() }}",
+              "type": "string"
+            },
+            {
+              "id": "381a912d-84b4-447a-be68-d8f29888c562",
+              "name": "URL",
+              "value": "={{ $json.homepage.extractDomain() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        1420
+      ],
+      "id": "3dd4f9c4-7ae5-4ee3-b374-7f5873b03dc0",
+      "name": "Data Transformations"
+    },
+    {
+      "parameters": {
+        "content": "### OUTPUT other nodes",
+        "height": 220,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -260,
+        1600
+      ],
+      "typeVersion": 1,
+      "id": "0da3b4bd-e13c-42bd-a191-f66803a12ca7",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ab855331-270a-42b1-9eba-df74de7c2374",
+              "name": "userID",
+              "value": "nameless",
+              "type": "string"
+            },
+            {
+              "id": "bd88573d-0e31-468a-9339-39eb05790279",
+              "name": "testString",
+              "value": "foobar",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -200,
+        1660
+      ],
+      "id": "d8533dc1-22d3-4b8d-873c-6c5c69fa1e06",
+      "name": "set foobar"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "34f518f5-4fdf-4cc4-9eeb-276bd788277c",
+              "name": "testString",
+              "value": "=foobar",
+              "type": "string"
+            },
+            {
+              "id": "a806711a-dd2a-4bb4-aa6c-5c3cf7fcee4a",
+              "name": "testNumber",
+              "value": 7,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        1660
+      ],
+      "id": "2f3e739c-0f6f-48d1-9384-fdc23001b7f6",
+      "name": "set foobar next"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb2f5cd8-e583-4909-94cb-324db0fdd66c",
+              "name": "userID",
+              "value": "={{ $('set foobar').item.json.userID }}",
+              "type": "string"
+            },
+            {
+              "id": "95b6dcdb-e80c-48a0-b381-8909826de059",
+              "name": "userID-other",
+              "value": "={{ $('set foobar').params.assignments.values()[0][0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "f6e84ff3-9285-416f-900b-0b92f3cb610a",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        1660
+      ],
+      "id": "f87c479b-88b3-4085-ab68-e17569d4e13d",
+      "name": "set foobar last"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "metadata",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "set example address",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "array of objects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "convinientFunctionData",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "set foobar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "jmespath": {
+      "main": [
+        []
+      ]
+    },
+    "array of objects": {
+      "main": [
+        [
+          {
+            "node": "jmespath",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "JMESPATH",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "jmespath slice",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "JMESPATH Slice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "metadata": {
+      "main": [
+        [
+          {
+            "node": "n8n Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "convinientFunctionData": {
+      "main": [
+        [
+          {
+            "node": "ConvinientFunction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set example address": {
+      "main": [
+        [
+          {
+            "node": "Data Transformations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set foobar": {
+      "main": [
+        [
+          {
+            "node": "set foobar next",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set foobar next": {
+      "main": [
+        [
+          {
+            "node": "set foobar last",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fb9621f5-6e8d-4c16-be04-6c5ce60a90c6",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "Z8CtMfZ5gRGppL7N",
+  "tags": []
+}

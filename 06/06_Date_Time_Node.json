@@ -1,0 +1,216 @@
+{
+  "name": "06 Date-Time-Node",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        1180,
+        200
+      ],
+      "typeVersion": 1,
+      "id": "fb2aa1eb-936c-4875-8add-06577d78ad50"
+    },
+    {
+      "parameters": {
+        "content": "## 1. Basic: Using the Date & Time node\nThere are two actions available within the `Date & Time` node:\n1. Calculating a date - adding/substracting minutes,hours, days, etc.\n2. Formatting a date\n\n",
+        "width": 500
+      },
+      "name": "Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2020,
+        -220
+      ],
+      "typeVersion": 1,
+      "id": "fa0af307-88cb-4a38-b0ae-b189f52aa257"
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{$now}}",
+        "timeUnit": "hours",
+        "duration": 12,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1660,
+        -140
+      ],
+      "id": "cc92ff45-bab2-4627-b8f0-27c73c69000e",
+      "name": "Add To A Date"
+    },
+    {
+      "parameters": {
+        "operation": "extractDate",
+        "date": "={{$now}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        60
+      ],
+      "id": "ae4b6b17-79a9-4ca7-9bcc-d6a69515346f",
+      "name": "Extract Part From A Date"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{$now}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2460,
+        360
+      ],
+      "id": "ed7dff3a-beb5-46d9-b080-94a9fdf6726f",
+      "name": "Format A Date"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        -220
+      ],
+      "id": "3b034576-5ad9-4e9b-bd5a-f6dfb8aa1169",
+      "name": "Get Current Date"
+    },
+    {
+      "parameters": {
+        "operation": "getTimeBetweenDates",
+        "startDate": "2025-01-19T09:43:37.639+01:00",
+        "endDate": "={{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        160
+      ],
+      "id": "fa29559a-98de-4b49-abb0-d8aeb64e03c5",
+      "name": "Get Time Between Dates"
+    },
+    {
+      "parameters": {
+        "operation": "roundDate",
+        "date": "={{ $now }}",
+        "mode": "roundUp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2300,
+        260
+      ],
+      "id": "9d0c9deb-ac2c-46ad-bbb3-9f843b51ba68",
+      "name": "Round A Date"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{$now.plus(3, 'months')}}",
+        "format": "custom",
+        "customFormat": "EEEE",
+        "outputFieldName": "formaatedDate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        320
+      ],
+      "id": "b33d29e0-6ea1-4e38-9ade-1aea7a41c531",
+      "name": "Combinded Example"
+    },
+    {
+      "parameters": {
+        "operation": "subtractFromDate",
+        "magnitude": "={{$now}}",
+        "duration": 2,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1820,
+        -40
+      ],
+      "id": "faeb2039-d47d-4198-b0e9-722cfbab3193",
+      "name": "Subtract From a Date"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Add To A Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract Part From A Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Format A Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Current Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Time Between Dates",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Round A Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Subtract From a Date",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Combinded Example",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9432a98c-f634-4a81-ac9a-c902e6e967aa",
+  "meta": {
+    "templateId": "1744",
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "ENvvCdq71lYj9iJ9",
+  "tags": []
+}

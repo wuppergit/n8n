@@ -1,0 +1,120 @@
+{
+  "name": "09 web de receive e-mail",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "135edf59-639e-4c6c-a19c-de87d1cce76b",
+      "name": "Email Trigger (IMAP)",
+      "credentials": {
+        "imap": {
+          "id": "7Gzn1Yj1OHPnbn2A",
+          "name": "IMAP account web.de (Posteingang)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b7a38d9d-b9b8-454c-85a1-a201f837c569",
+              "name": "from",
+              "value": "={{ $json.metadata[\"return-path\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "d18cf23f-7a31-4c1e-9bcc-c48dd3a56f8f",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "02e3b2c9-5c5e-4ac6-8058-5ca2fa7e05f4",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "5aaedc69-a109-4e1a-8958-0629cc579750",
+              "name": "textPlain",
+              "value": "={{ $json.textPlain }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ],
+      "id": "3eedbcdf-bc85-4898-ab62-72ebbe865f03",
+      "name": "Retrieve Fields"
+    }
+  ],
+  "pinData": {
+    "Email Trigger (IMAP)": [
+      {
+        "json": {
+          "textHtml": "<div dir=\"ltr\"><div>This is a Test.</div><div><br></div><br></div>\r\n",
+          "textPlain": "This is a Test.\r\n",
+          "metadata": {
+            "return-path": "<brandes.udo@googlemail.com>",
+            "authentication-results": " web.de; dkim=pass header.i=@googlemail.com",
+            "received": "from mail-ua1-f53.google.com ([209.85.222.53]) by mx-ha.web.de (mxweb104 [212.227.17.8]) with ESMTPS (Nemesis) id 1MSc9T-1ta7Av1I0f-00Ydoi for <brandes.57@web.de>; Fri, 28 Mar 2025 09:23:52 +0100",
+            "dkim-signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;        d=googlemail.com; s=20230601; t=1743150225; x=1743755025; darn=web.de;        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject         :date:message-id:reply-to;        bh=O6U+m6tnQFWAv31j2ILoKxKrx9iaB9KHiNhKx9Cfat4=;        b=i8gPFdkdNKIXxtu6G4rnZUBfXCW5aNSeNPaCN78eqmcI55VBp1wdCfvilenJICAfd0         vpM+HtCyPomZ1iC6804LhPz7f+YGCfvYvgLi+EfRrg5yQPlDejYie8AzsQH3oOQbE+w6         gbuWaLtYlk4OxEegn1TIlj9/ovRNkgoCi4F+talh0x71duvfYmDtu0L2ER4j1ZeSEK4L         /eqNAstFRZpzD0CjOKw+/tV1Tjil0mVKxi9ignRyio9L2HRhZxSk8TAXfao77lWuZ6Kl         gX33wCstL2peZDovTUQcnusWS2oKCmG4QqE+/w7KQMQyh0rG4l7R+n86MbAkOsZEwi05         Z9tg==",
+            "x-google-dkim-signature": "v=1; a=rsa-sha256; c=relaxed/relaxed;        d=1e100.net; s=20230601; t=1743150225; x=1743755025;        h=to:subject:message-id:date:from:mime-version:x-gm-message-state         :from:to:cc:subject:date:message-id:reply-to;        bh=O6U+m6tnQFWAv31j2ILoKxKrx9iaB9KHiNhKx9Cfat4=;        b=Kv4PNmUNMFhEflJ6vSR6lRMkNP3ys8H4n+RedwsViqEaWRB1YQN4cekUlB22A6TsCg         8zaZrMMZDuzZMAQKQuH/7SE4jMCOQSrfQeS3dXXtN2ywo8T/dwdlcybaWay/KLfpQEL4         VfvTRz7Lt1zcOe3wIcr+LeqfBBPqviWNICjheeUkqgoC4bC08Ef5QEkGfZ0NCq6aLdCn         FaNsfgASA3No0K0cRYBVdX9VWt0b5a7gKqGkh0GURza9G06CCj394gWwr4tkTulDP5uk         u+Yl8VVD9dvjhYN684YSl0FUfk9drAauHfQWFq45oCBtdmO0uo1lUVx5sAyljTf7Qao1         v0xA==",
+            "x-gm-message-state": "AOJu0Yx4bVBLOOkJzzn2e2mTuDvjd1UMAfCa+JVLhHxYWoR5wnefwaxn\tmRhbIwXdOC9nRYGDycw2ME5j2Q595lrtGPyCWrp+mMy5MuBFiK1S1DIBtj4N+nILzuvh/54uGe3\tgdEl2Z4UPYFwL/Pwokq5vH8M0aYBu6g==",
+            "x-gm-gg": "ASbGncs9Gbl7kt6iXDV9Rw9HhtgpXouANXVU2/NpH3kHmOdJj9NCh/R/6FmcVn0xcAN\tRt/w6QUg8NxYBs1lYsHexJfJaB0mzCx0j7lPoyrZWURtfgAaYvPhtMAz1m1/5rFcePHwk3KWIps\tXr6xZ8UwmgZk3UYNn+ao7KLwsIp5MeUm3ptQ==",
+            "x-google-smtp-source": "AGHT+IHHw+sI23OizXL7EpjAiQknPXLnFB/qGkO7qQzzkzYih8xFwD82CZM6R+1wnoIVbd4YXHIFrx0ZVOqqy7c8TTI=",
+            "x-received": "by 2002:a05:6102:162c:b0:4c2:d9d3:2aae with SMTP id ada2fe7eead31-4c5870aefdbmr5968565137.21.1743150225417; Fri, 28 Mar 2025 01:23:45 -0700 (PDT)",
+            "mime-version": "1.0",
+            "x-gm-features": "AQ5f1JqJgBHKwaW0fbmPG1u3ALSJm3pP-v947bBTGOOUhzMS0Kf-LSQTs8jpaVE",
+            "message-id": "<CAHZku3yTWvpLTkbkM-g5josy+fhGjwSmyxKG5fA9SuFqXJxQpg@mail.gmail.com>",
+            "content-type": "multipart/alternative; boundary=\"000000000000f9eef4063162c932\"",
+            "envelope-to": "<brandes.57@web.de>",
+            "ui-inboundreport": "unknown:5;M01:P0:LoUE0sw+AYE=;oGMZyJwAkZkWFAuvgFKQgYfcpWgi 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 N82mjw+Ac+o6A91c9I/KMFgP7vFfPQCj0613w=="
+          },
+          "from": "Udo Brandes <brandes.udo@googlemail.com>",
+          "date": "Fri, 28 Mar 2025 09:23:34 +0100",
+          "subject": "Test n8n Inbox",
+          "to": "brandes.57@web.de"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5051a9b1-3d1c-4b0a-8f90-603cd237443e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "Mrue6eWOTa30Xedw",
+  "tags": []
+}

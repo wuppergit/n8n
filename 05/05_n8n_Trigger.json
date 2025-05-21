@@ -1,0 +1,205 @@
+{
+  "name": "05 n8n-Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "title": "Workflow activated / changed",
+        "body": "=workflow-name: {{ $json.name }} / event: {{ $json.event }} / time: {{ $json.timestamp }}"
+      },
+      "type": "n8n-nodes-base.pushbullet",
+      "typeVersion": 1,
+      "position": [
+        960,
+        100
+      ],
+      "id": "e335001c-a4f2-4dee-adb6-2651694fcd05",
+      "name": "Pushbullet",
+      "credentials": {
+        "pushbulletOAuth2Api": {
+          "id": "9kEJktDktFCGQKAg",
+          "name": "Pushbullet account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $json.workflow_id }}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "id": "4f9d66a5-dd86-4e5a-b98a-08aecd4b6cc5",
+      "name": "n8n",
+      "credentials": {
+        "n8nApi": {
+          "id": "SffZn2Uu9Up89bP4",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        600,
+        100
+      ],
+      "id": "7c46205d-1074-4761-89ef-bfce47abd1eb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "events": [
+          "activate",
+          "update"
+        ]
+      },
+      "type": "n8n-nodes-base.n8nTrigger",
+      "typeVersion": 1,
+      "position": [
+        40,
+        120
+      ],
+      "id": "223d6cda-2cbe-4d7f-9b3c-46cc7829794d",
+      "name": "n8n Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d5713fab-5ac3-48d6-9df3-62fa4e4c4b19",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "71a2533e-d829-48c9-9cee-7abcfe9bed92",
+      "name": "select workflow-name"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "name"
+            },
+            {
+              "fieldToAggregate": "event"
+            },
+            {
+              "fieldToAggregate": "timestamp"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        780,
+        100
+      ],
+      "id": "292217ee-5977-4aef-9d33-589e3027d453",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Pushbullet": {
+      "main": [
+        []
+      ]
+    },
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "select workflow-name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n Trigger": {
+      "main": [
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "select workflow-name": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Pushbullet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "adc16bbd-8857-446a-a97a-9c76eea18f6f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "RC7Xv7TGe4YzsCdl",
+  "tags": []
+}

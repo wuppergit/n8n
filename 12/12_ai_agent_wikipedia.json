@@ -1,0 +1,146 @@
+{
+  "name": "12 ai-agent wikipedia",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        -100
+      ],
+      "id": "9874b247-7c8a-4845-a0cd-53a299132be6",
+      "name": "When chat message received",
+      "webhookId": "1acd3139-7882-4cc5-9ce2-1512c90c912d"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Use Wikipedia for the response"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        180,
+        -100
+      ],
+      "id": "161dd6b7-64fd-41ef-9267-ad5ca0233cd0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        100,
+        100
+      ],
+      "id": "b289a4de-2b8a-4308-ae3f-aec5f43b923c",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "NhUdX5LZDijKf09s",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        440,
+        100
+      ],
+      "id": "1bf6cf88-a4db-40fa-894a-82ce3b9262c5",
+      "name": "Wikipedia"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "78e4f43d-d669-4bf8-ade6-536329e96c38",
+              "name": "newlines",
+              "value": "={{ $json.output.split(\"\\n\") }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -100
+      ],
+      "id": "656c70c5-4223-4283-a9d6-4a7b4bcb92ea",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8e85b667-de44-4421-b047-1794da2a601d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "OPEPj767nfsFbiOe",
+  "tags": []
+}

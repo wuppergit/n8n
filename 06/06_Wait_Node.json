@@ -1,0 +1,260 @@
+{
+  "name": "06 Wait-Node",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1220,
+        60
+      ],
+      "id": "226774a0-9170-4ff1-b01c-eb80fc28985c",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        -400
+      ],
+      "id": "d7f4e953-9f2b-4aa4-9541-c1dbe6d23e60",
+      "name": "Wait Time Interval (2 sec)",
+      "webhookId": "c0687af2-0d39-4550-a0e7-67ce24def3c7"
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "2025-02-14T13:51:00"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        60
+      ],
+      "id": "ede80bad-8175-4938-b839-8820f7d40a51",
+      "name": "Wait Specified Time",
+      "webhookId": "c0687af2-0d39-4550-a0e7-67ce24def3c7",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": "= {{$now.plus({seconds: 1})}} "
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        -240
+      ],
+      "id": "b85baedf-2716-4a88-9e17-cf7c9c0c9a46",
+      "name": "Wait Time Interval (1 sec) Expression",
+      "webhookId": "c0687af2-0d39-4550-a0e7-67ce24def3c7",
+      "disabled": true,
+      "notes": "Funktioniert nicht mit Expressions"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "94b11b67-17ba-4e47-be68-0eb43a0ef569",
+              "name": "timestamp",
+              "value": 1740085000,
+              "type": "number"
+            },
+            {
+              "id": "8b14fead-79dd-4a68-aac7-07d378ac3975",
+              "name": "timestampMillis",
+              "value": 1740085000000,
+              "type": "number"
+            },
+            {
+              "id": "ddb422ca-bb2d-4b1d-b23a-958db682b796",
+              "name": "localTime",
+              "value": "20. Feb. 2025, 21:56:40",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        240
+      ],
+      "id": "b74a35e8-84a2-407c-a4d7-5fab316c7355",
+      "name": "Set a timestamp"
+    },
+    {
+      "parameters": {
+        "jsCode": "// INPUT: time in seconds\nconst now = Date.now();             // in millis\nconst diff = $input.first().json.timestamp - (now  / 1000); \nreturn [{ json: { diff } }];\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -600,
+        240
+      ],
+      "id": "a82e5cbc-2049-49ca-86d8-d17dd4144cd9",
+      "name": "compute diffs 2 sec"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.diff  }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        240
+      ],
+      "id": "9d6a5180-f8ac-4cde-b10c-6d48327bf4f2",
+      "name": "Wait diff seconds",
+      "webhookId": "c0687af2-0d39-4550-a0e7-67ce24def3c7",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "##  Workaround for wait spefic time with expression\n- Date String doesn't work\n- calculate amount of time to wait instead\n\n\n\n",
+        "height": 460,
+        "width": 700
+      },
+      "name": "Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -840,
+        -60
+      ],
+      "typeVersion": 1,
+      "id": "ecf77f63-fc8f-4f55-a506-a2c989c28d83"
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -600,
+        440
+      ],
+      "id": "459414b8-54c4-4c8b-ae5d-8121cdbe4925",
+      "name": "Wait",
+      "webhookId": "12e36997-1eed-4080-b4d9-d6cfad41d8b3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b8a73898-ab27-4a7e-94ed-5f2775ce1fca",
+              "name": "re",
+              "value": "={{ $execution.resumeUrl  }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        440
+      ],
+      "id": "54128df1-2b1e-4df5-9c68-3ff831c665c6",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set a timestamp",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait Specified Time",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait Time Interval (1 sec) Expression",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait Time Interval (2 sec)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set a timestamp": {
+      "main": [
+        [
+          {
+            "node": "compute diffs 2 sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compute diffs 2 sec": {
+      "main": [
+        [
+          {
+            "node": "Wait diff seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9a077dcd-a5f9-4595-826b-1883c8f5f87b",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "lq1rYpW0sk2mYNbs",
+  "tags": []
+}

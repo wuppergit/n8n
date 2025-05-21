@@ -1,0 +1,363 @@
+{
+  "name": "04 array of objects",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        100
+      ],
+      "id": "bc3a4075-e885-4537-9016-57e124dee265",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d868b556-7b57-4ca8-8af6-816cbfe0d86c",
+              "leftValue": "={{ $json.HTTPS }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -20
+      ],
+      "id": "147c6303-5fec-4958-8727-0faee61db93a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b4ed128-34e4-41ec-8bef-13a6cb71686b",
+              "name": "application",
+              "value": "n8n",
+              "type": "string"
+            },
+            {
+              "id": "292d63ad-230c-4108-aeb5-77600275d24e",
+              "name": "version",
+              "value": 0.815,
+              "type": "number"
+            },
+            {
+              "id": "be4fa792-1f9e-41e8-b71e-29d87dd1f41d",
+              "name": "ram",
+              "value": 9096,
+              "type": "number"
+            },
+            {
+              "id": "399223c5-ca25-4eff-8e7d-1d074db002f7",
+              "name": "date",
+              "value": "25.02.2025",
+              "type": "string"
+            },
+            {
+              "id": "79b51dff-c3d8-44aa-8275-9a34d8984630",
+              "name": "HTTPS",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "b040e8c0-4ffd-4f6c-927c-d8930c2c3748",
+              "name": "tags",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ed3dd365-6d14-492e-a652-8104d564c3fc",
+              "name": "nodes",
+              "value": "   [\"set\", \"code\", \"if\"]",
+              "type": "array"
+            },
+            {
+              "id": "e5527c2b-eda3-441d-8247-294fe703d8d3",
+              "name": "user",
+              "value": "{     \"user1\": \"root\",     \"user2\": \"mike\"   }",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -180
+      ],
+      "id": "ce44e31d-650d-4520-a4e7-e9cfbb12c694",
+      "name": "Set JSON"
+    },
+    {
+      "parameters": {
+        "jsCode": "let jsonObject = {\n  \"application\": \"n8n\",\n  \"version\": 0.815,\n  \"ram\": 9096,\n  \"date\": \"25.02.2025\",\n  \"HTTPS\": false,\n  \"tags\": null,\n  \"nodes\": [\n    \"SET\",\n    \"Execute Command\",\n    \"Manual Trigger\"\n  ],\n  \"user\": {\n    \"user1\": \"root\",\n    \"user2\": \"mike\"\n  }\n}\nreturn jsonObject;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        -20
+      ],
+      "id": "7a1ff88c-3964-4c7b-9ff3-d90244b4351a",
+      "name": "Code JSON"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"read data\",\n      \"credentials\": false \n    }\n  },\n  {  \n    json: {    \n      \"name\": \"send e-mail\",\n      \"credentials\": true \n    } \n  }      \n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        220
+      ],
+      "id": "e1b8b2d9-80c6-4627-a0f3-2385e252ce58",
+      "name": "Code array of objects"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        480,
+        360
+      ],
+      "id": "8953e2d9-e007-4fea-abd1-b56f1b44a82a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "content": "## handle JSON\n",
+        "height": 360,
+        "width": 540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -240
+      ],
+      "id": "ebfa1698-4fa0-4c4f-955b-964cba674ef6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## handle array of objects\n",
+        "height": 360,
+        "width": 540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        160
+      ],
+      "id": "1772c948-3232-4e2c-bf5a-0191f7b4e746",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let allItems = $input.all()\nreturn allItems[1]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        220
+      ],
+      "id": "fdacc4f1-a1f7-45f1-9a21-442c011b4869",
+      "name": "select item[1]"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "be923744-ce8b-476f-8426-c44e1a4ea5ce",
+              "name": "json",
+              "value": "={{ [  {\"name\": \"read data\", \"credentials\": false } ,  { \"name\": \"send e-mail\", \"credentials\": true }  ] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        360
+      ],
+      "id": "69b0b04e-eab1-4969-9ccb-fd6fc4bc4430",
+      "name": "Set list of objects"
+    },
+    {
+      "parameters": {
+        "jsCode": "// the output (dispay) is [{}] which suggest it's an array, but it is actually an object {} ... 1 item\n\nreturn {\n  \"name\": \"read data\",\n  \"credentials\": false \n}"
+      },
+      "id": "23581f16-5cab-4b5c-95a5-df28adb2e2dc",
+      "name": "JSON Object",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// this is an arry [{}] ... 2 items\n\nreturn [\n  {\n    json: {\n      \"name\": \"read data\",\n      \"credentials\": false \n    }\n  },\n  {  \n    json: {    \n      \"name\": \"send e-mail\",\n      \"credentials\": true \n    } \n  }      \n]\n\n\n\n\n"
+      },
+      "id": "9b0493d7-abb7-4bf1-843d-fd2fd8f43158",
+      "name": "JSON Array",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        920,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// as [] is missing, you only get the first object ... 1 item\n\nreturn {\n    \"name\": \"read data\",\n    \"credentials\": false \n  },\n  {    \n    \"name\": \"send e-mail\",\n    \"credentials\": true \n  }      \n\n\n"
+      },
+      "id": "8ed5afc1-1e95-4a8f-86d3-5dfffb807017",
+      "name": "JSON Object NOT Array",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        920,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### basic understandung of JSON structure\n",
+        "height": 760,
+        "width": 360,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        840,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "0b2a5833-f38b-489d-b0fc-e5a7a2698a39",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code JSON",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set JSON",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code array of objects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set list of objects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        []
+      ]
+    },
+    "Code JSON": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code array of objects": {
+      "main": [
+        [
+          {
+            "node": "select item[1]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        []
+      ]
+    },
+    "select item[1]": {
+      "main": [
+        []
+      ]
+    },
+    "Set list of objects": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "73eadf2f-31a8-4fa3-b8b7-1c3b71327456",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "Z0XlLdXLOLf9QTQy",
+  "tags": []
+}

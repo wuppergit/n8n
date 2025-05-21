@@ -1,0 +1,219 @@
+{
+  "name": "06 Sub-Workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        180,
+        200
+      ],
+      "id": "030a04e8-093f-46a2-a66e-bec10ead04f7",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $workflow.id }}",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        600,
+        200
+      ],
+      "id": "45d4f899-e4f1-47d4-af53-a18897cc6492",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        360,
+        420
+      ],
+      "id": "35926f2e-69e8-4f87-b5fe-908c130a4cc3",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0ab21af8-12b7-4956-a47a-b15d2d0b1e8a",
+              "name": "StringParent",
+              "value": "={{ $json.StringParent }}",
+              "type": "string"
+            },
+            {
+              "id": "eb89e169-afa4-4d45-b555-26eb10c69bd7",
+              "name": "StringChild",
+              "value": "={{ $json.StringParent + \" world\" }}",
+              "type": "string"
+            },
+            {
+              "id": "503a5919-0aed-41a5-8a1c-88bdd9a75b32",
+              "name": "number",
+              "value": 777,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        420
+      ],
+      "id": "764fdf83-65a3-416a-9316-7fbbef8335a3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        840,
+        200
+      ],
+      "id": "37fd80dc-a91c-4fd7-a542-150a2430d7b5",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "adbdf7d0-83a5-403c-86d9-e7346d8da164",
+              "name": "StringParent",
+              "value": "hello",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        380,
+        200
+      ],
+      "id": "b615c058-00d6-4ee7-99d8-a27cd1f0106d",
+      "name": "Set Hello"
+    },
+    {
+      "parameters": {
+        "content": "### Parent Workflow",
+        "height": 200,
+        "width": 900
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "cf9a68b0-9c8f-441e-8e91-c9371f1e8031",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### Child Workflow",
+        "height": 200,
+        "width": 900,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "3ebdac86-a553-4aa9-97f0-84af1ecffa4f",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Hello",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Hello": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a03f1fcd-c474-4b84-a139-ee9b97b223b2",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "JhD5NCeLbeZngiQL",
+  "tags": []
+}

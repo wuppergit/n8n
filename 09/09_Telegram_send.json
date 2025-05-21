@@ -1,0 +1,105 @@
+{
+  "name": "09 Telegram send",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -20
+      ],
+      "id": "e59f7411-042c-4239-85a3-a625cf4f0a9b",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f9389382-9d7e-4aa4-866a-d309565630b8",
+              "name": "ttle",
+              "value": "Hello",
+              "type": "string"
+            },
+            {
+              "id": "c31ce5c5-d15e-4dfc-8423-2e79d76a4296",
+              "name": "message",
+              "value": "Hello from n8n.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        -20
+      ],
+      "id": "52f90fce-b8ee-4722-93ec-0ba2be41549c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "chatId": "602067158",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": true
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        -20
+      ],
+      "id": "20b3b0d8-5ba9-4959-8e31-fe35bd8c2e13",
+      "name": "Telegram",
+      "webhookId": "ce50d1e9-4bfd-406e-9493-f18bfb580ec4",
+      "credentials": {
+        "telegramApi": {
+          "id": "UrZxsRPu2Y1ggRKy",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a4f13126-6ca8-4f2d-97af-fed4efd2561e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "GWHRTt9gMUTl9JOR",
+  "tags": []
+}

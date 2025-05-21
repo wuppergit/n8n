@@ -1,0 +1,111 @@
+{
+  "name": "09 Telegram Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        -420
+      ],
+      "id": "85345eb2-a64c-41ab-8e35-eb59072d1c9a",
+      "name": "Telegram Trigger",
+      "webhookId": "1638f323-edd3-45b8-a87a-888faa060784",
+      "credentials": {
+        "telegramApi": {
+          "id": "UrZxsRPu2Y1ggRKy",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.thecocktaildb.com/api/json/v1/1/random.php",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -60,
+        -420
+      ],
+      "typeVersion": 1,
+      "id": "58a2b1ac-8d99-451d-937a-dbce90d5d7aa"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+        "file": "={{$node[\"HTTP Request\"].json[\"drinks\"][0][\"strDrinkThumb\"]}}",
+        "additionalFields": {
+          "caption": "={{$node[\"HTTP Request\"].json[\"drinks\"][0][\"strDrink\"]}}",
+          "reply_to_message_id": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"message_id\"]}}"
+        }
+      },
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        140,
+        -420
+      ],
+      "typeVersion": 1,
+      "webhookId": "cf260635-bb28-4f12-9369-cf65b0405f56",
+      "id": "1d9d1fa4-3e4e-4e8e-94c4-6e639e7db7ad",
+      "credentials": {
+        "telegramApi": {
+          "id": "UrZxsRPu2Y1ggRKy",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cbd47929-39be-4d25-ba96-05bdedffe099",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "QamyltudpcJEvJhq",
+  "tags": [
+    {
+      "createdAt": "2025-04-16T07:15:46.223Z",
+      "updatedAt": "2025-04-16T07:15:46.223Z",
+      "id": "GKVdgZEMwOGp45OF",
+      "name": "HTTP"
+    }
+  ]
+}

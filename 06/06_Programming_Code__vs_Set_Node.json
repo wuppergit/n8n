@@ -1,0 +1,1164 @@
+{
+  "name": "06 Programming Code- vs Set-Node",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        580
+      ],
+      "id": "87fabc13-c191-4301-b9e8-19de57c507d8",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## handle array of objects with code- / set-node\n- creating arry of objects",
+        "height": 360,
+        "width": 540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1260,
+        -440
+      ],
+      "id": "8913fb2d-103d-4245-a91b-35e4fb444cee",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let allItems = $input.all()\nreturn allItems[1]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        200
+      ],
+      "id": "c04b15ce-3bd2-485a-9264-8c30afb2cb88",
+      "name": "select item[1]",
+      "notesInFlow": true,
+      "notes": "2nd item"
+    },
+    {
+      "parameters": {
+        "url": "https://zenquotes.io/api/quotes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -100,
+        1140
+      ],
+      "id": "30b564b5-df94-48c3-a74f-859bedf08ad1",
+      "name": "HTTP Request",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "q, a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        260,
+        1140
+      ],
+      "id": "be71f29f-6a46-4849-9a6d-cbf5aefc1597",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nreturn items[0].json.map(item => {\n\treturn {\n\t\tjson: item\n\t}\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        1240
+      ],
+      "id": "443f8103-d0b4-4a0e-abda-167529af73f2",
+      "name": "Code",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "name",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        680
+      ],
+      "id": "a40f69e1-2b16-48f1-ac16-19d49fccf644",
+      "name": "Split Out name"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "854839c0-050f-4484-83e9-fab146145b3e",
+              "leftValue": "={{ $json.version.toString() }}",
+              "rightValue": "107",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1240,
+        800
+      ],
+      "id": "ac6c669b-005f-4989-9547-c5d890314e90",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "name",
+              "field2": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        1480,
+        700
+      ],
+      "id": "2f58c4bc-4f73-40da-ae1c-6564412f3aef",
+      "name": "Compare Datasets"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nreturn $input.first().json.json.map(item => {\n    return {\n        json: item\n    }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -340,
+        860
+      ],
+      "id": "f00aaf93-8dd0-4d28-8af8-07e3e639aed0",
+      "name": "Split Out into 2 items / map"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n\t{\n    \tjson: {\n    \t\tdataObject: $input.all().map(item => item.json)\n    \t}\n    }\n  ];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        260
+      ],
+      "id": "3f873325-6adb-4472-bf99-bfca88584a6e",
+      "name": "aggregate to one item"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\n\nreturn items[0].json.dataObject.map(item => {  \n\treturn {\n\t\tjson: item\n\t}\n});\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        260
+      ],
+      "id": "d6f86d57-78fd-46e1-8c00-107d945c572a",
+      "name": "split out map dataObject"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"code\",\n      \"version\": 5 \n    }\n  }   \n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        620
+      ],
+      "id": "fcdb5b9e-f1b1-46dc-9cc0-6071be39414f",
+      "name": "One Item To Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"code\",\n      \"version\": 5 \n    }\n  }   \n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        440
+      ],
+      "id": "7fe656cf-4e9f-4083-9057-1a82f9c68a82",
+      "name": "one item to merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        720,
+        860
+      ],
+      "id": "edfcb693-4326-4aec-a6c2-5f2f1174a42d",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nlet newItems = [];\n\nfor(let i=0; i<items.length; i++){  \n  newItems.push(\n    {  \"json\":\n      {  \"name\": items[i].json.name\n      }\n   }    \n  )  \n}\n\n/*\n// add item\nnewItems.push(\n  {  \"json\":\n      {  \"name\": \"filter\"\n      }\n   }    \n)\n*/\n\nreturn newItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        360
+      ],
+      "id": "bfe9fc11-b49d-4770-a263-2aa99f296213",
+      "name": "split out name / push"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        980,
+        700
+      ],
+      "id": "3ea20d73-05c5-4037-b464-7893e4cee5c4",
+      "name": "Merge Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        400
+      ],
+      "id": "5c15a79e-e2c1-41a6-8156-da58f5c55a50",
+      "name": "merge items"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n//for (const item of $input.all()) {\n//  item.json.myNewField = 1;\n//}\n//return $input.all();\n\nlet items = $input.all();\nlet newItems = [];\n\nfor(let i=0; i<items.length; i++){  \n  if (items[i].json.version == 107 ) {\n  newItems.push(\n\n    {  \"json\":\n      {  \"name\": items[i].json.name\n      }\n   }    \n  )  \n  }  \n}\n\n\nreturn newItems;\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1240,
+        440
+      ],
+      "id": "2f426338-1cfe-47ef-8ef2-9117e99307c8",
+      "name": "filter"
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "name",
+              "field2": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        1480,
+        340
+      ],
+      "id": "6fde73ee-e721-4968-8595-9ecc95b7a6f2",
+      "name": "Compare Datasets1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.debugHelper",
+      "typeVersion": 1,
+      "position": [
+        420,
+        -400
+      ],
+      "id": "097a01d9-bcb6-4e95-87be-6b42d410486a",
+      "name": "DebugHelper"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        1140
+      ],
+      "id": "1fa6e65c-006f-40fa-8de0-fbdd18ad28ae",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4697b09c-43c7-409e-8f3c-c81b8ba1a79e",
+              "name": "street",
+              "value": "={{ $json.address.street }}",
+              "type": "string"
+            },
+            {
+              "id": "5589b8db-dbde-4593-99ee-4a76dd818939",
+              "name": "city",
+              "value": "={{$json['address']['city']}}",
+              "type": "string"
+            },
+            {
+              "id": "353c86f6-947d-4757-9684-1daa9252dae6",
+              "name": "age",
+              "value": "={{$now.diff(DateTime.fromISO($json.dateOfBirth), 'years').toFormat('yy')}}",
+              "type": "string"
+            },
+            {
+              "id": "768ac449-3c5b-445f-9b4a-3dee53bf49b6",
+              "name": "hello",
+              "value": "=Hello {{ $json.firstname }}, how are you?",
+              "type": "string"
+            },
+            {
+              "id": "35e13f85-c592-4e46-a761-4874be405b12",
+              "name": "reference-item-chain",
+              "value": "={{ $('Set Example Address').item.json.address.city }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        -40
+      ],
+      "id": "b22087c1-fcd6-4e56-956b-6db5d9cab29c",
+      "name": "Change Address"
+    },
+    {
+      "parameters": {
+        "jsCode": "// example address dta\nreturn [\n  {\n\tjson: {\n      \"userID\": 777,\n      \"name\": \"Miller\",\n      \"firstname\": \"John\",\n      \"address\": {\n        \"street\": \"Homelane\",\n        \"number\": \"99\",\n        \"postDirection\": 4711,\n        \"city\": \"London\"\n      },\n      \"dateOfBirth\": \"1990-01-01\",      \n\t  email: {\n\t    personal: 'john@home.com',\n\t\twork: 'john@museum.org'\n\t  },\n\t}\n  },\n];\n\n  \n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        -280
+      ],
+      "id": "ae6c924a-24ee-46e0-a3d4-095051473d0e",
+      "name": "set example address",
+      "notesInFlow": true,
+      "notes": "addess data with nestesd array"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"read data\",\n      \"credentials\": false \n    }\n  },\n  {  \n    json: {    \n      \"name\": \"send e-mail\",\n      \"credentials\": true \n    } \n  }      \n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        300
+      ],
+      "id": "f266dc32-dc2a-43cd-9e38-3128fe22612a",
+      "name": "array of objects",
+      "notesInFlow": true,
+      "notes": "node properties"
+    },
+    {
+      "parameters": {
+        "content": "### create array of objects",
+        "height": 1460,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -580,
+        -440
+      ],
+      "typeVersion": 1,
+      "id": "c883808e-1f46-4520-b0ad-9f350c009d7d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nitems[0].json.note = 'this is a note';\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        200
+      ],
+      "id": "40d0b14b-36e8-4301-9957-b06cf2c5c9d0",
+      "name": "add one field first item"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "be923744-ce8b-476f-8426-c44e1a4ea5ce",
+              "name": "json",
+              "value": "={{ [  {\"name\": \"read data\", \"credentials\": false } ,  { \"name\": \"send e-mail\", \"credentials\": true }  ] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -520,
+        680
+      ],
+      "id": "316ce40a-d37b-4381-9390-96139a185fab",
+      "name": "Array Of Objects",
+      "notesInFlow": true,
+      "notes": "node properties"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3548e2d2-9a90-4d21-bff2-a98c2f437d81",
+              "name": "userID",
+              "value": 77,
+              "type": "number"
+            },
+            {
+              "id": "7f0aa509-631b-4985-b418-82268064f250",
+              "name": "name",
+              "value": "Miller",
+              "type": "string"
+            },
+            {
+              "id": "e53b30f6-4664-46dc-908d-fed93b411565",
+              "name": "firstname",
+              "value": "John",
+              "type": "string"
+            },
+            {
+              "id": "7ee5fb33-2275-46fc-b2fa-970b97395c6f",
+              "name": "address",
+              "value": "{\n  \"street\": \"Homelane\",\n  \"number\": \"99\",\n  \"postDirection\": 4711,\n  \"city\": \"London\"\n}\n",
+              "type": "object"
+            },
+            {
+              "id": "bc4e6162-5590-45ae-8c70-1f34bffc169a",
+              "name": "dateOfBirth",
+              "value": "1990-01-01",
+              "type": "string"
+            },
+            {
+              "id": "9a9c4faf-7e16-40b8-b65f-2f1cf6fdf871",
+              "name": "email",
+              "value": "{\n  \"personal\": \"john@home.com\",\n  \"work\": \"john@museum.org\"\n}\n",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -520,
+        -40
+      ],
+      "id": "4fe40ea3-758e-4b48-a954-adc6a10a668e",
+      "name": "Set Example Address",
+      "notesInFlow": true,
+      "notes": "addess data with nestesd array"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        680
+      ],
+      "id": "04d8ac54-08e4-4c3e-a877-5c1d9e24fcdb",
+      "name": "Split Out Into 2 Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b02ee41-b05e-4711-a3c9-e3e973409eca",
+              "name": "city0",
+              "value": "={{ $json.address.city }}",
+              "type": "string"
+            },
+            {
+              "id": "25ab7f3a-75eb-4077-85b2-509d39e50e4a",
+              "name": "city1",
+              "value": "={{$json['address']['city']}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -120,
+        -40
+      ],
+      "id": "2eca71c7-887a-4c3c-a430-c00beaf27f30",
+      "name": "Reference Fields",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "content": "### reference fields",
+        "height": 560,
+        "width": 180
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        -440
+      ],
+      "typeVersion": 1,
+      "id": "63c0b7cd-413e-431a-bb6d-db7f84351c60",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.json.city1 = $input.item.json.address.city \n$input.item.json.city2 = $input.item.json['address']['city'];\nreturn $input.item;\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        -380
+      ],
+      "id": "f5cef046-ba14-46f1-b555-db92692a72bf",
+      "name": "reference fields each",
+      "notesInFlow": true,
+      "notes": "Run Once for Each Item"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n/**\nreturn {\n\"city1\": $input.all()[0].json.address.city,    \n\"city2\": $input.all()[0]['json']['address']['city'],      \n\"city3\": $node[\"set example address\"].json.address.city,\n\"city4\": $jmespath($input.all(), \"[0].json.address.city\"),   \n\"city5\": items[0].json.address.city,\n}\n*/\n/**\nlet allItems = $input.all();\nallItems[0].json.city1 = $input.all()[0].json.address.city;\nreturn allItems;\n*/\n\nlet firstItem = $input.first();\nfirstItem.json.city1 = $input.all()[0].json.address.city;\nfirstItem.json.city2 = $input.all()[0]['json']['address']['city'];\nfirstItem.json.city3 = $node[\"set example address\"].json.address.city;\nfirstItem.json.city4 =  $jmespath($input.all(), \"[0].json.address.city\");   \nfirstItem.json.city5 = items[0].json.address.city;\nreturn firstItem;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        -220
+      ],
+      "id": "a08a41b8-f708-4c3c-a3f9-656c476714a8",
+      "name": "reference fields all",
+      "notesInFlow": true,
+      "notes": "Run Once for AllItems"
+    },
+    {
+      "parameters": {
+        "content": "### split out \"name\"",
+        "height": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "538f6829-77af-498b-a058-6f959a17321e",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### add a field",
+        "height": 880,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "db10eb75-39af-43ba-8abf-cf9e707674f3",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        440,
+        620
+      ],
+      "id": "61a30615-0c9e-4fff-ad52-8f3cce8e5cd8",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        440,
+        440
+      ],
+      "id": "e07db2b1-b5bc-4bc6-a8f0-2700dd3881b7",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "content": "### compute",
+        "height": 880,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        380,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "984937f3-f8c4-4374-817a-67aa5827153d",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'usages' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.usages = 7;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        360
+      ],
+      "id": "aa26619b-5d7c-4b41-84f8-aa86176dcfde",
+      "name": "add new field usages"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "806ac2be-3549-49bb-9dba-bd6d96f3abb6",
+              "name": "usages",
+              "value": 7,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        680
+      ],
+      "id": "e226ec97-cdb2-411f-b58d-3387b65e4905",
+      "name": "Add New Field usages"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.usages += 10;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        300
+      ],
+      "id": "4ab5fd60-bf99-40ac-bfe9-869d86efe618",
+      "name": "compute usages + 10"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "806ac2be-3549-49bb-9dba-bd6d96f3abb6",
+              "name": "usages",
+              "value": "={{ $json.usages + 10}}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        780
+      ],
+      "id": "c23bdc4e-d88a-4a78-aec5-5c0c7ea7c02a",
+      "name": "Compute usages + 10"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "$input.item.json.city = $input.item.json.city.replaceAll('o','-') ;\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        -40
+      ],
+      "id": "0cbb22b6-bb99-49cd-8f1c-587a3f8c8909",
+      "name": "javascript replace"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf5fb0f1-4ae6-4458-9e17-1001b5f2da37",
+              "name": "date",
+              "value": "={{$json.city.replaceAll('o','-') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        -200
+      ],
+      "id": "aa0d15cf-3037-4633-990d-e6a5de2eef99",
+      "name": "Javascript Replace"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "array of objects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Array Of Objects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "set example address",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Example Address",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out name": {
+      "main": [
+        [
+          {
+            "node": "Add New Field usages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "aggregate to one item": {
+      "main": [
+        [
+          {
+            "node": "split out map dataObject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "One Item To Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        []
+      ]
+    },
+    "one item to merge": {
+      "main": [
+        [
+          {
+            "node": "merge items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split out name / push": {
+      "main": [
+        [
+          {
+            "node": "add new field usages",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "add one field first item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Items": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge items": {
+      "main": [
+        [
+          {
+            "node": "filter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Compare Datasets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Compare Datasets1": {
+      "main": [
+        []
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change Address": {
+      "main": [
+        [
+          {
+            "node": "Javascript Replace",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "javascript replace",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "array of objects": {
+      "main": [
+        [
+          {
+            "node": "select item[1]",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "split out name / push",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add one field first item": {
+      "main": [
+        []
+      ]
+    },
+    "Array Of Objects": {
+      "main": [
+        [
+          {
+            "node": "Split Out Into 2 Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out into 2 items / map",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set example address": {
+      "main": [
+        [
+          {
+            "node": "reference fields each",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "reference fields all",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Example Address": {
+      "main": [
+        [
+          {
+            "node": "Reference Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out Into 2 Items": {
+      "main": [
+        [
+          {
+            "node": "Split Out name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing1": {
+      "main": [
+        [
+          {
+            "node": "One Item To Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing2": {
+      "main": [
+        [
+          {
+            "node": "one item to merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reference Fields": {
+      "main": [
+        [
+          {
+            "node": "Change Address",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add new field usages": {
+      "main": [
+        [
+          {
+            "node": "compute usages + 10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add New Field usages": {
+      "main": [
+        [
+          {
+            "node": "Compute usages + 10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "compute usages + 10": {
+      "main": [
+        [
+          {
+            "node": "merge items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "aggregate to one item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute usages + 10": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Items",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "7a60937e-2761-4910-a49e-263c7d70f74e",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "jULgFS8HaWM2UAV5",
+  "tags": []
+}

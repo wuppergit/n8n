@@ -1,0 +1,102 @@
+{
+  "name": "08 webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e7699281-a641-4a06-a823-c2c513da1e1a",
+              "name": "test",
+              "value": "Hello World",
+              "type": "string"
+            },
+            {
+              "id": "2fbe70cf-db2a-4566-a055-948422f725e9",
+              "name": "hugo",
+              "value": 2,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "f3483019-8a95-49d2-82c2-0a65fbf0da4a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "path": "hello-world",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        0
+      ],
+      "id": "e7407122-cd73-4212-b44b-81462ae6d64e",
+      "name": "Webhook",
+      "webhookId": "e8342dac-466e-4a69-b74a-f4727b43d034"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.test }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        120,
+        0
+      ],
+      "id": "ad77d19c-6da5-4cf2-ac02-a6e8194e5edd",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ee5e6723-26a1-4097-8627-74178c96ef82",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "VDGHO063EWMGblS8",
+  "tags": []
+}

@@ -1,0 +1,1341 @@
+{
+  "name": "10 rss feed",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        300
+      ],
+      "id": "7b70e96b-4548-49da-9adb-5680e69494e1",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "id": "587a6abe-6b03-4171-adc0-24f583726a12",
+      "name": "Merged Rss",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1240,
+        40
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "jsCode": "// Escape simbols function\nfunction escapeMarkdown(text) {\n    return text\n        .replace(/\\\\/g, \"\\\\\\\\\")\n        .replace(/\\*/g, \"\\\\*\")\n        .replace(/\\_/g, \"\\\\_\")\n        .replace(/\\[/g, \"\\\\[\")\n        .replace(/\\]/g, \"\\\\]\")\n        .replace(/~/g, \"\\\\~\")\n        .replace(/`/g, \"\\\\`\")\n        .replace(/>/g, \"\\\\>\")\n        .replace(/#/g, \"\\\\#\")\n        .replace(/\\+/g, \"\\\\+\")\n        .replace(/=/g, \"\\\\=\")\n        .replace(/\\|/g, \"\\\\|\")\n        .replace(/!/g, \"\\\\!\");\n}\n\n// Generate list with links\nconst formattedList = items.map(item => {\n    const title = escapeMarkdown(item.json.title || \"No title\");\n    const link = item.json.link || \"#\";\n\n    // Telegram Markdown Format: [Text](URL)\n    return `[${title}](${link})`;\n}).join(\"\\n\"); // Join with line break\n\n// Return generated list\nreturn [{ json: { message: formattedList } }];\n\n"
+      },
+      "id": "731003ac-c079-46c9-ae7f-9ea80af0ba11",
+      "name": "Markdown list",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2100,
+        40
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "chatId": "602067158",
+        "text": "=`----------------------------`\n`-- TorrentLand & HDOlimpo --`\n`----------------------------`\n{{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "21a6de6d-e1ee-483b-9554-68f121cd269d",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2440,
+        40
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "b78c8021-7159-4d99-b6c1-3c280e8c8f21",
+      "credentials": {
+        "telegramApi": {
+          "id": "UrZxsRPu2Y1ggRKy",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "id": "9752ecad-41ea-4963-b859-a99d8decd8d7",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -240,
+        520
+      ],
+      "typeVersion": 1.2,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Rss \nIn these nodes you have to modify the urls of the rss feeds to be consulted.",
+        "height": 1120,
+        "width": 500
+      },
+      "id": "f75bb9cf-ecb5-45d4-b8f5-d6c4e2190180",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        -760
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Items age\nHere the maximum age of the elements that we are going to show is defined",
+        "height": 1120,
+        "width": 320
+      },
+      "id": "31d2e139-6534-430e-8be4-2558a5d113d2",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        -760
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Curate info\nAdjust the regular expression to achieve the desired result",
+        "height": 1120,
+        "width": 420
+      },
+      "id": "66f1457f-d8b7-4209-a71e-b5c46164cefa",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        980,
+        -760
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "sendTo": "SET YOUR EMAIL HERE",
+        "subject": "=New post from {{ $json.link.extractDomain() }}: {{ $json.title }} ",
+        "message": "=Check out this new post from {{ $json.link.extractDomain() }} at {{ $json.link }}\n\n----\n\n {{ $json.contentSnippet }}",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "id": "4cf13d4b-3681-4a43-9eb1-6836b0cb5a7a",
+      "name": "Send email with each post",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        2420,
+        -540
+      ],
+      "typeVersion": 2.1,
+      "webhookId": "469f31d0-d46e-4155-9270-b56316939e14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "urls",
+        "options": {}
+      },
+      "id": "f1ac1af9-2beb-4216-ae1a-46ca0b3b99dc",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        280,
+        -540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "257d7e0a-1c6e-42ca-825c-347fec574914",
+              "name": "urls",
+              "type": "array",
+              "value": "[\"https://www.ft.com/world?format=rss\", \"https://www.tagesschau.de/infoservices/alle-meldungen-100~rdf.xml\", \"https://medium.com/feed/n8n-io\"]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8aec7f92-78e9-417f-8f93-a23c37ea4da1",
+      "name": "List of RSS feeds",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        80,
+        -540
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "fc379675-9de4-429f-a4f2-940ff70cee75",
+      "name": "Loop Over Items1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        500,
+        -540
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.urls }}",
+        "options": {}
+      },
+      "id": "58f53fdd-18eb-4dbd-978f-d675b63e1bfb",
+      "name": "RSS Read1",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [
+        740,
+        -520
+      ],
+      "retryOnFail": true,
+      "typeVersion": 1,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## prepare RSS list",
+        "height": 1120,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        20,
+        -760
+      ],
+      "typeVersion": 1,
+      "id": "bcf8fd3f-c4ce-4e8c-b168-5d6109ec5701",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "sendTo": "SET YOUR EMAIL HERE",
+        "subject": "=New post from {{ $json.link.extractDomain() }}: {{ $json.title }} ",
+        "message": "=Check out this new post from {{ $json.link.extractDomain() }} at {{ $json.link }}\n\n----\n\n {{ $json.contentSnippet }}",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "id": "531b4084-9745-4153-a6f5-bcf2d04cfb14",
+      "name": "Send email with each post1",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        2420,
+        -300
+      ],
+      "typeVersion": 2.1,
+      "webhookId": "469f31d0-d46e-4155-9270-b56316939e14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "👆 Add your RSS feeds urls here.",
+        "height": 80,
+        "width": 150,
+        "color": 7
+      },
+      "id": "dc5f7313-a8f7-46ca-ae2c-879d47dcfded",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        -640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n\t{\n\t\tjson: {\n\t\t\turl: 'https://www.ft.com/world?format=rss',\n\t\t}\n\t},\n  \t{\n\t\tjson: {\n\t\t\turl: 'https://www.tagesschau.de/infoservices/alle-meldungen-100~rdf.xml',\n\t\t}\n\t},\n  \t{\n\t\tjson: {\n\t\t\turl: 'https://medium.com/feed/n8n-io',\n\t\t}\n\t} \n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -320
+      ],
+      "id": "05e49942-231a-4c37-a540-929aecee965f",
+      "name": "list of rss feeds"
+    },
+    {
+      "parameters": {
+        "url": "https://www.tagesschau.de/infoservices/alle-meldungen-100~rdf.xml",
+        "options": {}
+      },
+      "id": "a2ea617b-f728-4c87-9575-c167fd34c78e",
+      "name": "RSS daily-ne",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [
+        520,
+        40
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  \t{\n\t\tjson: {\n\t\t\turl: 'https://medium.com/feed/n8n-io',\n\t\t}\n\t} \n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -120
+      ],
+      "id": "ffb93d5d-7566-4de0-9d39-6d1432ef5229",
+      "name": "Set URL n8n"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        -120
+      ],
+      "id": "251d7e43-1f0b-415b-8101-60ce930b0957",
+      "name": "RSS n8n"
+    },
+    {
+      "parameters": {
+        "url": "https://www.ft.com/world?format=rss",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "id": "5d3ba1a3-124d-4068-a6d4-81a6b67d625f",
+      "name": "RSS FT",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "position": [
+        520,
+        200
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        -320
+      ],
+      "id": "b358d940-f45f-460c-983d-7e70a73b204e",
+      "name": "RSS all"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b653ae-6a43-4e6d-86b8-066384eaa7d6",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "e300ad1b-6b93-45f7-a964-294abbebfd95",
+              "name": "link",
+              "type": "string",
+              "value": "={{ $json.link}}"
+            },
+            {
+              "id": "bd548580-e879-4671-ad4e-603d2496362e",
+              "name": "pubDateTimestamp",
+              "type": "string",
+              "value": "={{ new Date($json.pubDate).getTime() }}"
+            },
+            {
+              "id": "77b5ca1d-2f81-4288-b88e-dadefd3d26c0",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a2656a82-1049-4d05-ae5a-3160212a8d52",
+      "name": "Curate FT",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1000,
+        200
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b653ae-6a43-4e6d-86b8-066384eaa7d6",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "e300ad1b-6b93-45f7-a964-294abbebfd95",
+              "name": "link",
+              "type": "string",
+              "value": "={{ $json.link}}"
+            },
+            {
+              "id": "bd548580-e879-4671-ad4e-603d2496362e",
+              "name": "pubDateTimestamp",
+              "type": "string",
+              "value": "={{ new Date($json.pubDate).getTime() }}"
+            },
+            {
+              "id": "77b5ca1d-2f81-4288-b88e-dadefd3d26c0",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7e074192-ab67-4f98-8d09-2916a8224376",
+      "name": "Curate Daily-News",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1000,
+        40
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b653ae-6a43-4e6d-86b8-066384eaa7d6",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "e300ad1b-6b93-45f7-a964-294abbebfd95",
+              "name": "link",
+              "type": "string",
+              "value": "={{ $json.link}}"
+            },
+            {
+              "id": "bd548580-e879-4671-ad4e-603d2496362e",
+              "name": "pubDateTimestamp",
+              "type": "string",
+              "value": "={{ new Date($json.pubDate).getTime() }}"
+            },
+            {
+              "id": "77b5ca1d-2f81-4288-b88e-dadefd3d26c0",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87115d93-5982-4f3b-8fd0-77713016ecbd",
+      "name": "Curate n8n",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1000,
+        -120
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b653ae-6a43-4e6d-86b8-066384eaa7d6",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "e300ad1b-6b93-45f7-a964-294abbebfd95",
+              "name": "link",
+              "type": "string",
+              "value": "={{ $json.link}}"
+            },
+            {
+              "id": "bd548580-e879-4671-ad4e-603d2496362e",
+              "name": "pubDateTimestamp",
+              "type": "string",
+              "value": "={{ new Date($json.pubDate).getTime() }}"
+            },
+            {
+              "id": "77b5ca1d-2f81-4288-b88e-dadefd3d26c0",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3392143c-5b17-4c51-8911-3ef1c4c75220",
+      "name": "Curate RSS all 1",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1160,
+        -520
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b653ae-6a43-4e6d-86b8-066384eaa7d6",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "e300ad1b-6b93-45f7-a964-294abbebfd95",
+              "name": "link",
+              "type": "string",
+              "value": "={{ $json.link}}"
+            },
+            {
+              "id": "bd548580-e879-4671-ad4e-603d2496362e",
+              "name": "pubDateTimestamp",
+              "type": "string",
+              "value": "={{ new Date($json.pubDate).getTime() }}"
+            },
+            {
+              "id": "77b5ca1d-2f81-4288-b88e-dadefd3d26c0",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "45d7f8c1-88cc-4de3-b1cd-a1a3af81ac48",
+      "name": "Curate RSS all 2",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1160,
+        -320
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "97b4e257-2413-4c78-8b33-1f7523bfe0cd",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              },
+              "leftValue": "={{ DateTime.fromISO($json.isoDate) }}",
+              "rightValue": "={{ DateTime.now().minus({hour: 1}) }}"
+            },
+            {
+              "id": "b37ee746-6b2c-45ad-80db-fa2750ce9a58",
+              "operator": {
+                "type": "dateTime",
+                "operation": "beforeOrEquals"
+              },
+              "leftValue": "={{ DateTime.fromISO($json.isoDate) }}",
+              "rightValue": "={{ DateTime.now() }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5891c07d-bd40-4c0f-90c4-22d2af83779e",
+      "name": "If published in the last hour 1",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1500,
+        -520
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "97b4e257-2413-4c78-8b33-1f7523bfe0cd",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              },
+              "leftValue": "={{ DateTime.fromISO($json.isoDate) }}",
+              "rightValue": "={{ DateTime.now().minus({hour: 1}) }}"
+            },
+            {
+              "id": "b37ee746-6b2c-45ad-80db-fa2750ce9a58",
+              "operator": {
+                "type": "dateTime",
+                "operation": "beforeOrEquals"
+              },
+              "leftValue": "={{ DateTime.fromISO($json.isoDate) }}",
+              "rightValue": "={{ DateTime.now() }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "82c48bb0-c148-4951-8513-537c0c2eebe7",
+      "name": "If published in the last hour 2",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1500,
+        -320
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "046f5bde-6d2c-4dfd-b29b-17be6c34cc1b",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "=\n{{ $json.pubDateTimestamp }}\n",
+              "rightValue": "={{ Date.now() - 1 * 1 * 60 * 60 * 1000 }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "6476d7ab-40c4-4f22-b7ea-dfd9b9ca14f1",
+      "name": "Filter published in the last hour",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        1500,
+        40
+      ],
+      "typeVersion": 2.2,
+      "notes": "{{ Date.now() - 1 (days) * 1 (hours) * 60 (minutes) * 60 (seconds) * 1000 }}"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "pubDateTimestamp",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a2e576f6-393a-4856-b32a-c2785491c454",
+      "name": "Sort 1",
+      "type": "n8n-nodes-base.sort",
+      "position": [
+        1840,
+        -540
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "pubDateTimestamp",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c674e8cf-1a4c-4132-9b68-9039f2061cf8",
+      "name": "Sort 2",
+      "type": "n8n-nodes-base.sort",
+      "position": [
+        1840,
+        -340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "pubDateTimestamp",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ab95bcb-c653-41be-ab70-4b57852aa188",
+      "name": "Sort 3",
+      "type": "n8n-nodes-base.sort",
+      "position": [
+        1840,
+        40
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "0f86a5ea-4708-4a16-bbd1-ad9ce91c58f7",
+      "name": "No Operation",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        740,
+        -680
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "title": "RSS",
+        "body": "={{ $json.message }}"
+      },
+      "type": "n8n-nodes-base.pushbullet",
+      "typeVersion": 1,
+      "position": [
+        2440,
+        -120
+      ],
+      "id": "6615ba00-8cb9-468b-bdea-c6c0396c10ea",
+      "name": "Pushbullet",
+      "credentials": {
+        "pushbulletOAuth2Api": {
+          "id": "9kEJktDktFCGQKAg",
+          "name": "Pushbullet account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "feedUrl": "https://www.tagesschau.de/infoservices/alle-meldungen-100~rdf.xml"
+      },
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        120
+      ],
+      "id": "c8374a4f-3cce-4748-abf9-e0ec0bd63b65",
+      "name": "RSS Feed Trigger",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n\t{\n\t\tjson: {\n\t\t\turl: 'https://www.ft.com/world?format=rss',\n\t\t}\n\t},\n  \t{\n\t\tjson: {\n\t\t\turl: 'https://www.tagesschau.de/infoservices/alle-meldungen-100~rdf.xml',\n\t\t}\n\t},\n  \t{\n\t\tjson: {\n\t\t\turl: 'https://medium.com/feed/n8n-io',\n\t\t}\n\t} \n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        520
+      ],
+      "id": "3312dba5-e052-4a52-88db-43e7d27c7162",
+      "name": "list of rss-feeds",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        520
+      ],
+      "id": "b1ebf57e-211b-480a-9a9e-00826e31f107",
+      "name": "RSS list",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11b653ae-6a43-4e6d-86b8-066384eaa7d6",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "e300ad1b-6b93-45f7-a964-294abbebfd95",
+              "name": "link",
+              "type": "string",
+              "value": "={{ $json.link}}"
+            },
+            {
+              "id": "bd548580-e879-4671-ad4e-603d2496362e",
+              "name": "pubDateTimestamp",
+              "type": "string",
+              "value": "={{ new Date($json.pubDate).getTime() }}"
+            },
+            {
+              "id": "77b5ca1d-2f81-4288-b88e-dadefd3d26c0",
+              "name": "isoDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b5070ff8-0870-4a08-99f8-12ac3632dd68",
+      "name": "Curate RSS list",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        420,
+        520
+      ],
+      "typeVersion": 3.4,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "046f5bde-6d2c-4dfd-b29b-17be6c34cc1b",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "=\n{{ $json.pubDateTimestamp }}\n",
+              "rightValue": "={{ Date.now() - 1 * 1 * 60 * 60 * 1000 }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "0965f9bf-fc3c-4264-8e7f-519c94bc9728",
+      "name": "Filter list published in the last hour",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        640,
+        520
+      ],
+      "typeVersion": 2.2,
+      "disabled": true,
+      "notes": "{{ Date.now() - 1 (days) * 1 (hours) * 60 (minutes) * 60 (seconds) * 1000 }}"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "pubDateTimestamp",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1ace262e-cadb-437b-9bd7-51e9848be2da",
+      "name": "Sort ",
+      "type": "n8n-nodes-base.sort",
+      "position": [
+        880,
+        520
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Escape simbols function\nfunction escapeMarkdown(text) {\n    return text\n        .replace(/\\\\/g, \"\\\\\\\\\")\n        .replace(/\\*/g, \"\\\\*\")\n        .replace(/\\_/g, \"\\\\_\")\n        .replace(/\\[/g, \"\\\\[\")\n        .replace(/\\]/g, \"\\\\]\")\n        .replace(/~/g, \"\\\\~\")\n        .replace(/`/g, \"\\\\`\")\n        .replace(/>/g, \"\\\\>\")\n        .replace(/#/g, \"\\\\#\")\n        .replace(/\\+/g, \"\\\\+\")\n        .replace(/=/g, \"\\\\=\")\n        .replace(/\\|/g, \"\\\\|\")\n        .replace(/!/g, \"\\\\!\");\n}\n\n// Generate list with links\nconst formattedList = items.map(item => {\n    const title = escapeMarkdown(item.json.title || \"No title\");\n    const link = item.json.link || \"#\";\n\n    // Telegram Markdown Format: [Text](URL)\n    return `[${title}](${link})`;\n}).join(\"\\n\"); // Join with line break\n\n// Return generated list\nreturn [{ json: { message: formattedList } }];\n\n"
+      },
+      "id": "15774b0e-f8ee-4c00-8ec8-cf08c2582791",
+      "name": "Markdown List",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1080,
+        520
+      ],
+      "typeVersion": 2,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "602067158",
+        "text": "=`----------------------------`\n`-- TorrentLand & HDOlimpo --`\n`----------------------------`\n{{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "d2f86c7f-99ea-4954-a993-22f2f9d27e6c",
+      "name": "send Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1300,
+        520
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "b78c8021-7159-4d99-b6c1-3c280e8c8f21",
+      "credentials": {
+        "telegramApi": {
+          "id": "UrZxsRPu2Y1ggRKy",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "List of RSS feeds",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "list of rss feeds",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS FT",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS daily-ne",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set URL n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merged Rss": {
+      "main": [
+        [
+          {
+            "node": "Filter published in the last hour",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown list": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pushbullet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "list of rss-feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List of RSS feeds": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "No Operation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Curate RSS all 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list of rss feeds": {
+      "main": [
+        [
+          {
+            "node": "RSS all",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS daily-ne": {
+      "main": [
+        [
+          {
+            "node": "Curate Daily-News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set URL n8n": {
+      "main": [
+        [
+          {
+            "node": "RSS n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS n8n": {
+      "main": [
+        [
+          {
+            "node": "Curate n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS FT": {
+      "main": [
+        [
+          {
+            "node": "Curate FT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS all": {
+      "main": [
+        [
+          {
+            "node": "Curate RSS all 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Curate FT": {
+      "main": [
+        [
+          {
+            "node": "Merged Rss",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Curate Daily-News": {
+      "main": [
+        [
+          {
+            "node": "Merged Rss",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Curate n8n": {
+      "main": [
+        [
+          {
+            "node": "Merged Rss",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Curate RSS all 1": {
+      "main": [
+        [
+          {
+            "node": "If published in the last hour 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Curate RSS all 2": {
+      "main": [
+        [
+          {
+            "node": "If published in the last hour 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If published in the last hour 1": {
+      "main": [
+        [
+          {
+            "node": "Sort 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If published in the last hour 2": {
+      "main": [
+        [
+          {
+            "node": "Sort 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter published in the last hour": {
+      "main": [
+        [
+          {
+            "node": "Sort 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort 3": {
+      "main": [
+        [
+          {
+            "node": "Markdown list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list of rss-feeds": {
+      "main": [
+        [
+          {
+            "node": "RSS list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS list": {
+      "main": [
+        [
+          {
+            "node": "Curate RSS list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Curate RSS list": {
+      "main": [
+        [
+          {
+            "node": "Filter list published in the last hour",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort ": {
+      "main": [
+        [
+          {
+            "node": "Markdown List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter list published in the last hour": {
+      "main": [
+        [
+          {
+            "node": "Sort ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown List": {
+      "main": [
+        [
+          {
+            "node": "send Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "be2afb2f-df7b-4dc5-ba2b-b4f2a9e0494d",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "1ORXvxhLjFks5icK",
+  "tags": [
+    {
+      "createdAt": "2025-05-17T13:34:57.909Z",
+      "updatedAt": "2025-05-17T13:34:57.909Z",
+      "id": "K6eWcZbmmJDjiChd",
+      "name": "Code"
+    }
+  ]
+}

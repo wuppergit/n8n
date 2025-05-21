@@ -1,0 +1,418 @@
+{
+  "name": "05 API-call with Backup Workflows",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        340,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "99f656fd-e9b1-4014-beaf-3324f9915c14"
+    },
+    {
+      "parameters": {
+        "url": "http://n8n:5678/api/v1/workflows",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "n8nApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        -400
+      ],
+      "id": "2d278046-84ca-4e9c-b290-c593623bb09e",
+      "name": "HTTP Get Workflow List",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "aqGEbW8EJ63s3T8p",
+          "name": "Header Auth account"
+        },
+        "n8nApi": {
+          "id": "SffZn2Uu9Up89bP4",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        340,
+        -180
+      ],
+      "id": "033a7fa4-6827-4c52-85a1-fd6cc64d1920",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "functionCode": "return items[0].json.data.map(item => {\n  return {json: item}\n});"
+      },
+      "name": "Map",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        880,
+        -400
+      ],
+      "typeVersion": 1,
+      "id": "9ea27654-d904-4f67-89f7-06e4107bb351"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/shared/test-write.txt",
+        "options": {
+          "append": false
+        }
+      },
+      "id": "49b33543-8e0a-4841-a920-e21a2ff28de5",
+      "name": "Write File .txt",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1940,
+        -400
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "OneAtATime",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        1120,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "99dba897-56e3-44e0-9399-f04ece187511"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        -140
+      ],
+      "id": "69cc1112-5b40-4af6-a28d-0dd0ab688b6e",
+      "name": "n8n",
+      "credentials": {
+        "n8nApi": {
+          "id": "SffZn2Uu9Up89bP4",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -140
+      ],
+      "id": "3ba2fdfa-3efc-4229-ae99-f873c04079ab",
+      "name": "n8n many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "SffZn2Uu9Up89bP4",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1740,
+        -400
+      ],
+      "id": "a7699357-161b-4632-9ae2-64443cfc2cb8",
+      "name": "Convert to Text File"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        -400
+      ],
+      "id": "1b61e6e3-d40a-4c50-a67e-0468db1c22d5",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/shared/save_{{ $('Aggregate1').item.json.data[0].name }}_{{DateTime.fromISO($now).toFormat('yyyy-LL-dd')}}.json ",
+        "options": {
+          "append": false
+        }
+      },
+      "id": "9c3b31b9-7858-4fb0-af94-6c15513be84f",
+      "name": "Write File .txt1",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1940,
+        -140
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1740,
+        -140
+      ],
+      "id": "f8b4e845-5390-4001-9708-45d423e0a41d",
+      "name": "Convert to Text File1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        -140
+      ],
+      "id": "4fdc2503-59cd-4b7b-9571-d1eaa3f7748a",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "content": "## n8n-line\n",
+        "height": 300,
+        "width": 1560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        -220
+      ],
+      "typeVersion": 1,
+      "id": "f94f8515-5a17-406a-9878-a5a7d48340e7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## HTTP-request-line\n",
+        "height": 220,
+        "width": 1560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        -460
+      ],
+      "typeVersion": 1,
+      "id": "6c42978a-36ab-4b22-9155-c782f1da9e1b",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "HTTP Get Workflow List",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "n8n many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Get Workflow List": {
+      "main": [
+        [
+          {
+            "node": "Map",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "n8n many workflows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Get Workflow List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OneAtATime": {
+      "main": [
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OneAtATime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to Text File": {
+      "main": [
+        [
+          {
+            "node": "Write File .txt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n many workflows": {
+      "main": [
+        [
+          {
+            "node": "OneAtATime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Convert to Text File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to Text File1": {
+      "main": [
+        [
+          {
+            "node": "Write File .txt1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Convert to Text File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e7c9a1e5-71bf-46ec-aebf-b4b7d2301355",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "mguxLENYnLYovrn5",
+  "tags": [
+    {
+      "createdAt": "2025-04-16T07:15:46.223Z",
+      "updatedAt": "2025-04-16T07:15:46.223Z",
+      "id": "GKVdgZEMwOGp45OF",
+      "name": "HTTP"
+    },
+    {
+      "createdAt": "2025-05-17T13:34:57.909Z",
+      "updatedAt": "2025-05-17T13:34:57.909Z",
+      "id": "K6eWcZbmmJDjiChd",
+      "name": "Code"
+    }
+  ]
+}

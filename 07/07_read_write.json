@@ -1,0 +1,479 @@
+{
+  "name": "07 read_write",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        80,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "826e259d-5911-47f7-9d4a-7e9f54d3e557"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f130f472-aa98-4509-9f46-9270610d519d",
+              "name": "data",
+              "value": "This is test content for write binary",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        1060
+      ],
+      "id": "4f8ca3b2-d679-4dfb-bd42-0fa99885b521",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fileName": "/data/shared/test-write-binary.txt",
+        "options": {}
+      },
+      "id": "86ec5219-9233-4c9c-89e2-9ff636077eea",
+      "name": "Write Binary File",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        920,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    \"data\": \"Das ist ein Write-Test\"\n  }\n];"
+      },
+      "id": "b802ea00-2cac-4076-af91-a7818522bef3",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "/data/shared/test-1.txt",
+        "options": {
+          "fileExtension": "",
+          "mimeType": "",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "fe563dcd-12c1-409e-85fc-136d8a2ebfe3",
+      "name": "Read File .txt",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        500,
+        160
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet xyz = \"start\"\nlet abc = $input.first().json.fileExtension\n\nreturn [{ json: { abc } }];"
+      },
+      "id": "1725682d-dbda-49e6-b924-741cf1db040b",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        920,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "48adc821-f707-4f70-bff5-ac08b11cdd14",
+              "name": "xyz",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        920,
+        20
+      ],
+      "id": "b2ab6c9a-becd-4695-badc-4fc1138b47ce",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/shared/test-write.txt",
+        "options": {
+          "append": false
+        }
+      },
+      "id": "9db2fd14-9a5f-43d2-8ba0-17671cb63f6f",
+      "name": "Write File .txt",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        920,
+        500
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "filePath": "/data/shared/n8n_Test.pdf"
+      },
+      "name": "Read Binary File .pdf",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "position": [
+        500,
+        740
+      ],
+      "typeVersion": 1,
+      "id": "1bb78e2b-5153-41c4-8b9d-79e750949375"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {
+          "password": ""
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        700,
+        740
+      ],
+      "id": "93b927aa-02b2-425d-9861-9474d133fa9c",
+      "name": "Extract from File pdf"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {
+          "encoding": "utf8",
+          "keepSource": "both"
+        }
+      },
+      "id": "a05ecff7-e503-4e20-8f4d-0bbe9ca1355c",
+      "name": "Extract from File txt",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        700,
+        160
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "test-write-binary.txt"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        1060
+      ],
+      "id": "05a94641-2a90-4376-b643-96faa424b851",
+      "name": "Convert to Text File"
+    },
+    {
+      "parameters": {
+        "triggerOn": "file",
+        "path": "/data/shared/test-1.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.localFileTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        80
+      ],
+      "id": "cc00ecb8-9ac3-4228-90bb-64f96fda0fed",
+      "name": "Local File Trigger",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## regular read / write\n",
+        "height": 680,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "3b02eaf5-93c6-4f5c-8d1b-8f222c315590",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## binary read / write\n",
+        "height": 520,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        700
+      ],
+      "id": "40c96d94-d446-487c-9f33-470aad740bbc",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## file trigger\n",
+        "height": 260,
+        "width": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "39ad9611-f5cf-4bde-b916-5a6291d07b7c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/data/shared/configuration.json",
+        "options": {
+          "fileExtension": "",
+          "mimeType": "",
+          "dataPropertyName": "data"
+        }
+      },
+      "id": "881b038f-d106-4a41-8175-559bf981f241",
+      "name": "Read File .json",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        500,
+        320
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "id": "9b2dd28d-8fdd-483c-b627-60f4181e8156",
+      "name": "Extract from File json",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        700,
+        320
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        500
+      ],
+      "id": "0fe434fd-6140-4fed-b7d4-c03e7651996a",
+      "name": "Convert to Text File1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let binaryDataBufferItem = await this.helpers.getBinaryDataBuffer(0, 'data');\nreturn binaryDataBufferItem;\n// Returns the data in the binary buffer for the first input item"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        900
+      ],
+      "id": "9991eb22-b888-4070-9d08-1e4b78dcc03d",
+      "name": "read binary data"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Read Binary File .pdf",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read File .txt",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read File .json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to Text File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Convert to Text File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read File .txt": {
+      "main": [
+        [
+          {
+            "node": "Extract from File txt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Binary File .pdf": {
+      "main": [
+        [
+          {
+            "node": "Extract from File pdf",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "read binary data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File txt": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to Text File": {
+      "main": [
+        [
+          {
+            "node": "Write Binary File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local File Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read File .txt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read File .json": {
+      "main": [
+        [
+          {
+            "node": "Extract from File json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to Text File1": {
+      "main": [
+        [
+          {
+            "node": "Write File .txt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c76afc88-4704-4e3a-b7d0-a74368439074",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "Qx3i9zNRMvh8I5OC",
+  "tags": []
+}

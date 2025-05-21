@@ -1,0 +1,303 @@
+{
+  "name": "04 error-producing",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        460
+      ],
+      "id": "192408f9-5bb6-404f-bd86-429cd6569c81",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Node-Error-Handling\n",
+        "height": 240,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        360,
+        260
+      ],
+      "id": "7bfab954-609d-4d7d-b1ea-a4560beb0068",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "185c570f-5ccf-495c-a911-5fb4ef414237",
+              "name": "error",
+              "value": "={{ $json.error }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        760,
+        340
+      ],
+      "id": "f24bcc50-19fa-4708-a08e-98f6a608ee12",
+      "name": "node based error handler"
+    },
+    {
+      "parameters": {
+        "content": "## logical Error-Handling\n",
+        "height": 460,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        360,
+        520
+      ],
+      "id": "d3c66214-b568-4d4b-adb2-159dfc158b27",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=An Error occured in If-Node; the value is {{ $json.lucky }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        460,
+        820
+      ],
+      "id": "efaeee90-654a-4d13-947a-b073cc2235a2",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ac2e56de-f768-4f6d-86d8-8d8b807c9b18",
+              "name": "lucky",
+              "value": 7,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        100,
+        540
+      ],
+      "id": "96cfa50c-7170-4df2-b7fc-4a1926e39b44",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        640
+      ],
+      "id": "ddb47739-cf01-4ba5-abf0-b1dc2f297fd1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "185c570f-5ccf-495c-a911-5fb4ef414237",
+              "name": "lucky",
+              "value": "={{ $json.lucky + 1 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        760,
+        600
+      ],
+      "id": "608bfb99-73a6-496e-8bcd-dfa8b9f5ff7f",
+      "name": "add 1"
+    },
+    {
+      "parameters": {
+        "throwErrorMessage": "=A Debug Error occured in If-Node; the value is {{ $json.lucky }}"
+      },
+      "type": "n8n-nodes-base.debugHelper",
+      "typeVersion": 1,
+      "position": [
+        760,
+        820
+      ],
+      "id": "4d2b9b99-661e-4a5c-a92f-f23a662f9025",
+      "name": "DebugHelper"
+    },
+    {
+      "parameters": {
+        "jsCode": "var newItem = [\n\t{ },\n];\n\n// RangeError: Invalid array length\nlet arr = new Array(-1);\n\nreturn newItem;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        340
+      ],
+      "id": "a31786c0-d5ab-4c0a-ba8a-3d586919700f",
+      "name": "throw Error1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7fd3164c-c640-41d8-a637-9a23f4b3c1df",
+              "leftValue": "={{ $json.lucky.toString() }}",
+              "rightValue": "7",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        460,
+        600
+      ],
+      "id": "6ac41328-e543-45a1-aef0-f05c6fa28460",
+      "name": "If lucky==7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If lucky==7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "throw Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add 1": {
+      "main": [
+        [
+          {
+            "node": "If lucky==7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "throw Error1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "node based error handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If lucky==7": {
+      "main": [
+        [
+          {
+            "node": "add 1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DebugHelper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "0Oy4s6hsWPffPaw9"
+  },
+  "versionId": "0c8f1e12-e68e-4d3a-a281-c6c9865a17bc",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "QlTYKEXasWCARkP1",
+  "tags": []
+}

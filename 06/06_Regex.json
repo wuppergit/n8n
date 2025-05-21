@@ -1,0 +1,127 @@
+{
+  "name": "06 Regex",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        -20
+      ],
+      "id": "03a7defa-65d5-4e38-88c9-e7d553f9e139",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9ff8a95f-0221-43ae-8c71-89953c137e2d",
+              "name": "replace1",
+              "value": "={{ $json.replace.replace(/\\[PACK\\].*/, \"\")  }}",
+              "type": "string"
+            },
+            {
+              "id": "7c13921c-70c4-4841-b7fc-065f35e99742",
+              "name": "replace2",
+              "value": "={{ $json.replace.replace(/\\[.*?\\]/g, \"\")  }}",
+              "type": "string"
+            },
+            {
+              "id": "f673969d-f977-4cfe-9e6b-b502137884ed",
+              "name": "match",
+              "value": "={{ $json.match.match(/xy/) }}",
+              "type": "string"
+            },
+            {
+              "id": "0a09d61a-e2d9-4640-b592-a8ccbbc872a0",
+              "name": "split1",
+              "value": "={{ $json.match.split(/xy/) }}",
+              "type": "string"
+            },
+            {
+              "id": "ed0517c5-1c0a-49d2-b776-f7b1d5594882",
+              "name": "split2",
+              "value": "={{ $json.match.split(/[xyXY]/) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        -20
+      ],
+      "id": "7120536d-51a9-424a-a4cf-9b47955de855",
+      "name": "RegEx"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9ff8a95f-0221-43ae-8c71-89953c137e2d",
+              "name": "replace",
+              "value": "Text [PACK] Title [EXTRA]",
+              "type": "string"
+            },
+            {
+              "id": "16bb3bee-b231-483f-b047-c7f0ceaaa10d",
+              "name": "match",
+              "value": "AB xy ab XY ABC xy abc",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        -20
+      ],
+      "id": "2e979ca2-4dfa-4b5b-9408-01f3fb9da9b6",
+      "name": "Set Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Fields": {
+      "main": [
+        [
+          {
+            "node": "RegEx",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f7d469e8-dfa4-4999-9e9a-3c36ae564100",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "2POIFWx67dwNs220",
+  "tags": []
+}

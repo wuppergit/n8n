@@ -1,0 +1,81 @@
+{
+  "name": "04 expressions",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9cc93f05-979c-4c72-962a-958d8a2f545d",
+      "name": "When clicking ‘Test workflow’",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4697b09c-43c7-409e-8f3c-c81b8ba1a79e",
+              "name": "street",
+              "value": "={{ $json.adress }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        0
+      ],
+      "id": "880eab7a-9e99-4273-bdd4-3c69def4c429",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {
+          "userID": 777,
+          "name": "Miller",
+          "firstname": "John",
+          "adress": {
+            "street": "Homelane",
+            "number": "99",
+            "postDirection": 4711,
+            "city": "London"
+          },
+          "dateOfBirth": "1990-01-01"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c8e04972-e2d0-45c3-85d9-af9b867a89db",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "680fbCqxyI5ahex9",
+  "tags": []
+}

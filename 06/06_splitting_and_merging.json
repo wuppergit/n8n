@@ -1,0 +1,751 @@
+{
+  "name": "06 splitting and merging",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1240,
+        440
+      ],
+      "id": "0c523fa4-4cb3-496e-a03a-645f4b72b3cb",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "854839c0-050f-4484-83e9-fab146145b3e",
+              "leftValue": "={{ $json.credentials.toString() }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        980
+      ],
+      "id": "6f2a4447-d600-4f67-8e77-71ce060c9d1e",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "name",
+              "field2": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        1020
+      ],
+      "id": "d3f1ac40-1f09-490c-9273-963dad272ebe",
+      "name": "Compare Datasets"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "dataObject",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        520
+      ],
+      "id": "fa7ea73a-4368-4228-ab46-c9ce4fb1b43e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"read data\",\n      \"credentials\": false \n    }\n  },\n  {  \n    json: {    \n      \"name\": \"pushbullet\",\n      \"credentials\": true \n    }\n  },\n  {  \n    json: {    \n      \"name\": \"send e-mail\",\n      \"credentials\": true \n    } \n  } \n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -980,
+        140
+      ],
+      "id": "badfa869-977b-423f-9392-e4ef92255700",
+      "name": "array of objects",
+      "notesInFlow": true,
+      "notes": "node properties"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "be923744-ce8b-476f-8426-c44e1a4ea5ce",
+              "name": "json",
+              "value": "={{ [\n  { \"name\": \"read data\",\n    \"credentials\": false \n  },\n  { \"name\": \"pushbullet\",\n    \"credentials\": true\n  },\n  { \"name\": \"send e-mail\",\n    \"credentials\": true\n  } \n] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -980,
+        680
+      ],
+      "id": "e886a626-a80e-4c9c-bd3c-8569c9aa802b",
+      "name": "Array Of Objects",
+      "notesInFlow": true,
+      "notes": "node properties"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 520,
+        "width": 920
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1020,
+        -60
+      ],
+      "typeVersion": 1,
+      "id": "0771dfe1-f804-4c4c-b8df-30874974479f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\nreturn $input.first().json.json.map(item => {\n    return {\n        json: item\n    }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -680,
+        860
+      ],
+      "id": "74c11881-d796-4d4c-b38a-34162d79cd8f",
+      "name": "Split Out into 3 items / map"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75ac3285-6028-4609-86a2-40b7b9400491",
+              "leftValue": "={{ $json.credentials }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        680
+      ],
+      "id": "e4ff74fa-2a89-4c25-8aea-9e520f4dd2b7",
+      "name": "If convert"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75ac3285-6028-4609-86a2-40b7b9400491",
+              "leftValue": "={{ $json.credentials.toString() }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        140
+      ],
+      "id": "b5673b90-ffd1-4bfa-85b1-d0d89ed5f7e6",
+      "name": "If (convert to string)"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        680
+      ],
+      "id": "7a4be3cd-6b07-486d-9b08-c00fbfe23074",
+      "name": "Split Out Into 3 Items"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.name }}",
+                    "rightValue": "read data",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f0549502-9afa-4256-a24e-845154f5830e"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "88d791b9-bd8d-4fec-94a8-9a5f3e58a9be",
+                    "leftValue": "={{ $json.name }}",
+                    "rightValue": "pushbullet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -400,
+        820
+      ],
+      "id": "1ba1564d-b361-4ed7-a936-7be897c068bc",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n\t{\n    \tjson: {\n    \t\tdataObject: $input.all().map(item => item.json)\n    \t}\n    }\n  ];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        -20
+      ],
+      "id": "7655a91a-8776-49d9-bc2c-656691709af8",
+      "name": "aggregate"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        1120
+      ],
+      "id": "c319184a-004c-469e-b04c-e2928d7081b0",
+      "name": "No Operation 1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        20,
+        720
+      ],
+      "id": "eb56c8a7-2daf-4cda-bcf9-e1dacce80d2a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        1300
+      ],
+      "id": "8f261930-1f91-4d9a-a52f-2fafa5727f9f",
+      "name": "No Operation 2"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"code\",\n      \"credentials\": false \n    }\n  },\n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        1120
+      ],
+      "id": "2d1770c9-0a34-4eac-bab3-e5ecd4d6b884",
+      "name": "1 tem to merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "let arrayOfObjects = [\n  {\n    json: {\n      \"name\": \"code\",\n      \"credentials\": false \n    }\n  },\n    {\n    json: {\n      \"name\": \"pushbullet\",\n      \"credentials\": false \n    }\n  },\n    {\n    json: {\n      \"name\": \"sort\",\n      \"credentials\": false \n    }\n  },  \n];\nreturn arrayOfObjects;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        1300
+      ],
+      "id": "758c6066-4516-4366-bb37-145f3449e57e",
+      "name": "3 items to compare"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nlet items = $input.all();\nlet newItems = [];\n\nfor(let i=0; i<items.length; i++){  \n  if (items[i].json.credentials == true ) {\n    newItems.push(\n      { \"json\": items[i].json\n      }    \n    )  \n  }  \n}\n\n\nreturn newItems;\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        300
+      ],
+      "id": "6bfb01f5-574c-4422-801e-9948e8e38820",
+      "name": "filter"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        580,
+        520
+      ],
+      "id": "752448d5-59c0-423e-b14c-9ba5fa587ab0",
+      "name": "Sort simple"
+    },
+    {
+      "parameters": {
+        "type": "code",
+        "code": "// The two items to compare are in the variables a and b\n\t// Access the fields in a.json and b.json\n\t// Return -1 if a should go before b\n\t// Return 1 if b should go before a\n\t// Return 0 if there's no difference\n\n\tfieldName = 'name';\n\n\tif (a.json[fieldName] < b.json[fieldName]) {\n\treturn -1;\n\t}\n\tif (a.json[fieldName] > b.json[fieldName]) {\n\treturn 1;\n\t}\n\treturn 0;"
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        580,
+        680
+      ],
+      "id": "21d4bf67-4655-4a6e-9074-e50db3370729",
+      "name": "Sort code"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = $input.all();\n\n// sort by name\nitems.sort((a, b) => {\n  const nameA = a.json.name.toUpperCase(); // ignore upper and lowercase\n  const nameB = b.json.name.toUpperCase(); // ignore upper and lowercase\n  if (nameA < nameB) {\n    return -1;\n  }\n  if (nameA > nameB) {\n    return 1;\n  }\n  // names must be equal\n  return 0;\n});\n\nreturn items;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        820
+      ],
+      "id": "1473b3b9-78e4-4013-bde8-934b8d44df42",
+      "name": "sort name"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        20,
+        1300
+      ],
+      "id": "7135d8ff-2a6e-4b6d-8cf7-3d3f5c9f088b",
+      "name": "No Operation "
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "name",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        20,
+        1120
+      ],
+      "id": "a4abaa46-0cdb-4e3b-a3c7-23806cf3d1a3",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 980,
+        "width": 1900
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1020,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "da824858-61b1-4e59-a640-1d2e5e742191",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "array of objects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Array Of Objects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        []
+      ]
+    },
+    "array of objects": {
+      "main": [
+        [
+          {
+            "node": "If (convert to string)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "aggregate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Array Of Objects": {
+      "main": [
+        [
+          {
+            "node": "Split Out Into 3 Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out into 3 items / map",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Operation 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "No Operation 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out into 3 items / map": {
+      "main": [
+        []
+      ]
+    },
+    "Split Out Into 3 Items": {
+      "main": [
+        [
+          {
+            "node": "If convert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aggregate": {
+      "main": [
+        []
+      ]
+    },
+    "No Operation 1": {
+      "main": [
+        [
+          {
+            "node": "1 tem to merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "If convert": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation 2": {
+      "main": [
+        [
+          {
+            "node": "3 items to compare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 tem to merge": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 items to compare": {
+      "main": [
+        [
+          {
+            "node": "No Operation ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "sort name",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sort simple",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sort code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sort name": {
+      "main": [
+        []
+      ]
+    },
+    "No Operation ": {
+      "main": [
+        [
+          {
+            "node": "Compare Datasets",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "1ec49ca3-2ff0-4154-978b-192827d8d3f0",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "4TketpuTnK8ZcLeF",
+  "tags": [
+    {
+      "createdAt": "2025-04-11T05:50:01.332Z",
+      "updatedAt": "2025-04-11T05:50:01.332Z",
+      "id": "v6rZAvvG3alsgZTW",
+      "name": "Compare Datasets"
+    },
+    {
+      "createdAt": "2025-04-11T05:49:31.392Z",
+      "updatedAt": "2025-04-11T05:49:31.392Z",
+      "id": "QsJgEkClyWJSTlQq",
+      "name": "Merge"
+    },
+    {
+      "createdAt": "2025-04-11T05:50:22.285Z",
+      "updatedAt": "2025-04-11T05:50:22.285Z",
+      "id": "yBbj7GJB7L4pAd9q",
+      "name": "Switch"
+    },
+    {
+      "createdAt": "2025-04-11T05:50:56.851Z",
+      "updatedAt": "2025-04-11T05:50:56.851Z",
+      "id": "yk95vMFEnKiLoKdo",
+      "name": "Split"
+    },
+    {
+      "createdAt": "2025-04-11T05:51:06.204Z",
+      "updatedAt": "2025-04-11T05:51:06.204Z",
+      "id": "5Qpa9yc5fLnCSSHf",
+      "name": "Append"
+    }
+  ]
+}

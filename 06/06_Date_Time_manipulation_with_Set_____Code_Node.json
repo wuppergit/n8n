@@ -1,0 +1,414 @@
+{
+  "name": "06 Date/Time manipulation with Set- /  Code-Node",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1340,
+        -1380
+      ],
+      "id": "4a8fa7f7-5578-41fa-8ffa-e9fd274aba2c",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## 2. Advanced way: Using Expressions\nIn `Set`-node dates are set using [Luxon expressions](https://docs.n8n.io/code-examples/expressions/luxon/) for the following formats:\n\nNow - `{{$now}}`\nCurrent time with seconds - `{{$now.toLocaleString(DateTime.TIME_WITH_SECONDS)}}`\nToday - `{{$today}}`\nTomorrow - `{{$today.plus({days: 1})}}`\nOne hour ago - `{{$now.minus({hours: 1})}}`\nWeekday name - `{{$today.weekdayLong}}`\n\nThe following `Set`-nodes do some formatting or calculation",
+        "height": 420,
+        "width": 740
+      },
+      "name": "Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        -1180
+      ],
+      "typeVersion": 1,
+      "id": "49b7ebe9-5481-4aa8-bac2-dd5390548785"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "61508dce-2bdd-4dc2-9265-8d19d1b54ad3",
+              "name": "dateTime_1",
+              "value": "={{ $now}}",
+              "type": "string"
+            },
+            {
+              "id": "d770d521-a1e0-42f2-851b-7470882342bb",
+              "name": "todaysDate_1",
+              "value": "={{\"Today's date is \" + $now}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -900,
+        -1760
+      ],
+      "id": "e0060f98-ba7b-4533-846e-6b3afe6495cd",
+      "name": "Date cast"
+    },
+    {
+      "parameters": {
+        "jsCode": "let dateTime_2 = $now\nlet todaysDate_2 = \"Today's date is \" + $now\nreturn [{ json: { dateTime_2, todaysDate_2 } }];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -680,
+        -1760
+      ],
+      "id": "02efca2c-0bdc-4398-8ca9-b34d9492d29a",
+      "name": "Date cast javascript"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "dateTime_3 = _now\ntodaysDate_3 = \"Today's date is \" + str(_now)\nreturn [{\"dateTime_3\": dateTime_3}, {\"todaysDate_3\": todaysDate_3},]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        -1760
+      ],
+      "id": "006dea05-ccde-47f8-9f25-d6b50b2a5448",
+      "name": "Date cast python"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "94b11b67-17ba-4e47-be68-0eb43a0ef569",
+              "name": "Now",
+              "value": "={{$now}}",
+              "type": "string"
+            },
+            {
+              "id": "fad2e308-9ce8-46fa-8a75-50b357c6337f",
+              "name": "Current time with seconds",
+              "value": "={{$now.toLocaleString(DateTime.TIME_WITH_SECONDS)}}",
+              "type": "string"
+            },
+            {
+              "id": "d70fa1ef-857b-4bcf-9215-6b37f95ffc4a",
+              "name": "Today",
+              "value": "={{$today}}",
+              "type": "string"
+            },
+            {
+              "id": "8a75a219-eca1-4845-8287-de53bb180f5c",
+              "name": "Tomorrow",
+              "value": "={{$today.plus({days: 1})}}",
+              "type": "string"
+            },
+            {
+              "id": "e5b081c7-7d3e-4873-9969-7a657da34560",
+              "name": "One hour from now",
+              "value": "={{$now.minus({hours: 1})}}",
+              "type": "string"
+            },
+            {
+              "id": "94e4003c-97c4-438b-89b2-34b2f8c67608",
+              "name": "Weekday",
+              "value": "={{$today.weekdayLong}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -900,
+        -920
+      ],
+      "id": "679e1aa2-4e46-42dd-825a-a90ef9f9aca6",
+      "name": "Luxon Set Date Time"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0325991a-2351-4585-bc1a-69e9fb3a702f",
+              "name": "Currenttime",
+              "value": "={{ $json.Now }}",
+              "type": "string"
+            },
+            {
+              "id": "145207af-81c1-43de-9513-0653c3b74fb0",
+              "name": "Current time formatted",
+              "value": "={{DateTime.fromISO($json[\"Now\"]).toFormat('yyyy LLL dd')}}",
+              "type": "string"
+            },
+            {
+              "id": "6ad43e95-f92c-4bfd-b5d8-5978b54d33d0",
+              "name": "timestamp",
+              "value": "={{DateTime.fromISO($json['Now']).diff(DateTime.fromSeconds(0), 'second').toObject()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -680,
+        -920
+      ],
+      "id": "9f4ad6ba-86f3-4402-a3a8-dc5080ac5f73",
+      "name": "Format Times"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a9a222be-d742-46f1-a19b-66a2a392c649",
+              "name": "Currenttime",
+              "value": "={{ $json.Currenttime }}",
+              "type": "string"
+            },
+            {
+              "id": "f3b9023d-05cd-451a-96ae-dfc1669d7919",
+              "name": "Diff Months",
+              "value": "={{DateTime.fromISO($json['Currenttime']).diff(DateTime.fromISO('2017-02-13'), 'months').toObject()}}",
+              "type": "string"
+            },
+            {
+              "id": "cdf58d41-6487-484d-9725-b61e1af7a1f2",
+              "name": "month as an unabbreviated localized string",
+              "value": "={{DateTime.fromISO($json['Currenttime']).toFormat('MMMM')}}",
+              "type": "string"
+            },
+            {
+              "id": "f135f104-afa4-425b-a0fd-20b3235bf048",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -460,
+        -920
+      ],
+      "id": "789bddcb-2334-4edb-a21d-b2b34ef07b7b",
+      "name": "Calculate / Extract times"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "813bdc8b-76f1-4009-a35f-f3a1dc66887c",
+              "name": "dateTime",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "fcf1aada-f856-47cc-bbbf-4ecc210026ed",
+              "name": "timestamp",
+              "value": "={{DateTime.fromISO($now).toSeconds()}}",
+              "type": "string"
+            },
+            {
+              "id": "c03e6e27-311f-4e30-9377-431c5e446b38",
+              "name": "timestampUnix",
+              "value": "={{DateTime.fromISO($now).toUnixInteger()}}",
+              "type": "string"
+            },
+            {
+              "id": "f796c9be-6d6f-47cf-8883-52b787958795",
+              "name": "timestampObject",
+              "value": "={{DateTime.fromISO($now).diff(DateTime.fromSeconds(0), 'second').toObject()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -900,
+        -1380
+      ],
+      "id": "d5116436-6922-43b6-9c3f-0c623a77ab9e",
+      "name": "timestamp"
+    },
+    {
+      "parameters": {
+        "content": "## 1. now() cast formatted / seconds\nThese nodes provide casting the output of the actual timestamp formatted  and as seconds in 3 different ways; formats:\n\nformated - 2025-02-20T09:23:20.646+01:00\nseconds  - 1740039800647\n\n\n\n",
+        "height": 340,
+        "width": 740
+      },
+      "name": "Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        -1940
+      ],
+      "typeVersion": 1,
+      "id": "eeb9828f-f91e-4a6b-850d-9f22be5fcb6a"
+    },
+    {
+      "parameters": {
+        "content": "## 2. timestamp \nThese nodes provide the output of the timestamp in different ways; formats:\n\ndateTime:        2025-02-20T13:18:03.522+01:00\ntimestamp:       1740053883.522\ntimestampUnix:   1740053883\ntimestampObject: {\"seconds\":1740053883.522}\n\n\n\n\n",
+        "height": 340,
+        "width": 740
+      },
+      "name": "Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        -1560
+      ],
+      "typeVersion": 1,
+      "id": "feb63e17-3166-4193-ac6d-2296a0b287da"
+    },
+    {
+      "parameters": {
+        "jsCode": "let dateTime = $now;\nlet timestamp = new Date(dateTime).getTime() / 1000;\nreturn [{ json: { dateTime, timestamp } }];\n\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -680,
+        -1380
+      ],
+      "id": "957e9eea-2ba0-4596-a042-fdfa6c9a872b",
+      "name": "Timestamp javascript"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "dateTime = _now\ntodayMidnight = _today\ntimestamp = dateTime.toSeconds()\nreturn [{\"dateTime\": dateTime}, {\"todayMidnight\": todayMidnight},  {\"timestamp\": timestamp}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -460,
+        -1380
+      ],
+      "id": "85ac7bd2-6f3e-45df-b6dc-8bfce4b4ea45",
+      "name": "Timestamp Python"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Luxon Set Date Time",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Date cast",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "timestamp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Luxon Set Date Time": {
+      "main": [
+        [
+          {
+            "node": "Format Times",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Times": {
+      "main": [
+        [
+          {
+            "node": "Calculate / Extract times",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date cast": {
+      "main": [
+        [
+          {
+            "node": "Date cast javascript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date cast javascript": {
+      "main": [
+        [
+          {
+            "node": "Date cast python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Timestamp javascript": {
+      "main": [
+        [
+          {
+            "node": "Timestamp Python",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "timestamp": {
+      "main": [
+        [
+          {
+            "node": "Timestamp javascript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9371db54-9a4e-4796-b57b-85a76be08b76",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "zC2441tRfPFNDZ1W",
+  "tags": []
+}

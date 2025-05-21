@@ -1,0 +1,157 @@
+{
+  "name": "09 PB HTTP-Push",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8384c899-ad96-46c4-8100-be0288404d55",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pushbullet.com/v2/pushes",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Access-Token",
+              "value": "o.KwRuY5cfRKrNYag7uscUHqnJ2BBdJ8XF"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "type",
+              "value": "note"
+            },
+            {
+              "name": "title",
+              "value": "Hello from n8n!"
+            },
+            {
+              "name": "body",
+              "value": "This is a Pushbullet test msg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        100
+      ],
+      "id": "7c4a911a-9c44-4d0e-a473-0e698e9d9a5e",
+      "name": "HTTP Request-1",
+      "notesInFlow": true,
+      "disabled": true,
+      "notes": "create push"
+    },
+    {
+      "parameters": {
+        "url": "https://api.pushbullet.com/v2/devices",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Access-Token",
+              "value": "o.KwRuY5cfRKrNYag7uscUHqnJ2BBdJ8XF"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        -80
+      ],
+      "id": "cda68f84-bae0-4fd9-aa08-52650c5469f0",
+      "name": "HTTP Request-0",
+      "notesInFlow": true,
+      "disabled": true,
+      "notes": "get all devices"
+    },
+    {
+      "parameters": {
+        "url": "https://api.pushbullet.com/v2/devices",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        -240
+      ],
+      "id": "328ff6c2-fcbe-465d-b9e5-bc7b5c0f0841",
+      "name": "HTTP Custom Auth",
+      "notesInFlow": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "NFpFiUJ9GuCEUfge",
+          "name": "PB Header"
+        },
+        "httpCustomAuth": {
+          "id": "LwW4mYa7wM58uX1A",
+          "name": "Pushbullet Custom Auth account (Access-Token)"
+        }
+      },
+      "notes": "get all devices"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request-1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request-0",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Custom Auth",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request-1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "14bae2ca-7b3b-4325-ad28-d5098a4c6805",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "S1LXwsXOkkORKSMq",
+  "tags": []
+}

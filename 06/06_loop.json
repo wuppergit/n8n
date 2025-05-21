@@ -1,0 +1,152 @@
+{
+  "name": "06 loop",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        40,
+        360
+      ],
+      "id": "7b70e96b-4548-49da-9adb-5680e69494e1",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    \"name\": \"pushbullet\",\n    \"credentials\": true\n  },\n  {\n    \"name\": \"send e-mail\",\n    \"credentials\": true\n  },\n  {\n    \"name\": \"read data\",\n    \"credentials\": false\n  },\n  {\n    \"name\": \"pushbullet\",\n    \"credentials\": true\n  },\n  {\n    \"name\": \"send e-mail\",\n    \"credentials\": true\n  },\n  {\n    \"name\": \"code\",\n    \"credentials\": false\n  }\n]\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        360
+      ],
+      "id": "8bd4b1e2-2f01-4546-9e49-b08c47e4e9b7",
+      "name": "Code Array Of Objects"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc25d5ea-1bba-46bc-a9fe-f628e3f0853c",
+              "name": "version",
+              "value": 1,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        740,
+        440
+      ],
+      "id": "ea05ec0e-ce64-46e7-89b2-fb69379011b8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        740,
+        280
+      ],
+      "id": "b8fbaa2c-7035-45d4-abc9-0f9ac43a8129",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "batchSize": 2,
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        480,
+        360
+      ],
+      "id": "6d9bf6b2-e513-497d-9380-2647946bbde2",
+      "name": "Loop Over Items"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code Array Of Objects",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Array Of Objects": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "eb6df51f-e800-4ec4-9454-65ad41993687",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "JTzVb8wW6VtEaLFr",
+  "tags": [
+    {
+      "createdAt": "2025-04-11T08:51:22.942Z",
+      "updatedAt": "2025-04-11T08:51:22.942Z",
+      "id": "6ZNK6ahoOEXGIRos",
+      "name": "Loop"
+    }
+  ]
+}

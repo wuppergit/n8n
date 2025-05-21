@@ -1,0 +1,121 @@
+{
+  "name": "09 web.de send e-mail",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -120
+      ],
+      "id": "e7705257-62d2-4952-8f57-7cc56520a7d8",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "fromEmail": "brandes.57@web.de",
+        "toEmail": "brandes.udo@googlemail.com",
+        "subject": "Test E-Mail n8n ",
+        "html": "=<p>Hello <b><span style='color:#548235'>greenies</span></b>,</p>\n<p>this is a <b>test e-mail</b> send by a n8n-workflow.</p>\n<p>Regards</p>\n<p> {{ $json.user }} </p> ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -40,
+        -120
+      ],
+      "id": "1464e45c-2f5c-4ac6-9af8-d1c23079fb67",
+      "name": "Send Email",
+      "webhookId": "c64a3334-21e8-45f4-8553-de5189314b2a",
+      "credentials": {
+        "smtp": {
+          "id": "fLpe8u9bD7YQovEn",
+          "name": "SMTP account web.de (Postausgang)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38644bcb-64dc-4727-b350-ab6d74880ebc",
+              "name": "user",
+              "value": "Mike",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -220,
+        -120
+      ],
+      "id": "ccba3bbe-4d76-47ad-9b4e-2609b9f0fa70",
+      "name": "Set Username"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        140,
+        -120
+      ],
+      "id": "676d4056-8101-4378-b591-8d457d451fe7",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Username",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Username": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "40ff4b80-f0c3-4d62-bb13-5e5963272983",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "AbJ0qu7fBqrcwYEG",
+  "tags": []
+}

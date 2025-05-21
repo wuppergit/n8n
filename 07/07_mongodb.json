@@ -1,0 +1,454 @@
+{
+  "name": "07 mongodb",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        -100
+      ],
+      "id": "ae5858d9-ed4c-4c16-ab10-359603f7549f",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36e1d431-f956-4061-bae8-4949592bfbbc",
+              "name": "name",
+              "value": "code",
+              "type": "string"
+            },
+            {
+              "id": "7b9142fb-ff6e-4d3b-8f8c-f7ca8dda619b",
+              "name": "credentials",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        -200
+      ],
+      "id": "1e032d05-6dd4-4b43-94ed-d5c955aa4f4b",
+      "name": "Edit Fields insert"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "nodes",
+        "fields": "name, credentials",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        -200
+      ],
+      "id": "39f6fdd4-8ebb-4ed7-b6cb-314b65ae3e25",
+      "name": "MongoDB insert",
+      "alwaysOutputData": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        780,
+        420
+      ],
+      "id": "56a4e986-917d-476c-9c20-28687cc08ca7",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "collection": "nodes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        -400
+      ],
+      "id": "49f4175d-e486-4293-991a-1dce0d77fa4f",
+      "name": "MongoDB find all",
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "nodes",
+        "options": {},
+        "query": "{\"name\":\"read data\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        0
+      ],
+      "id": "f1c26ba9-c5fb-47da-a9fc-2be883b9d0ca",
+      "name": "MongoDB find query",
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "findOneAndUpdate",
+        "collection": "nodes",
+        "updateKey": "_id",
+        "fields": "version, version_date",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        0
+      ],
+      "id": "d90de00a-80a5-4304-a63f-b59e273e1291",
+      "name": "MongoDB find and update",
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36e1d431-f956-4061-bae8-4949592bfbbc",
+              "name": "version",
+              "value": "={{ $json.version + 1}} ",
+              "type": "number"
+            },
+            {
+              "id": "deda8772-3333-4ca8-bf87-1483e8ce8244",
+              "name": "credentials",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "c126daae-6629-4a44-9473-2d07c97efbd9",
+              "name": "version_date",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        0
+      ],
+      "id": "33854bb3-3462-4fc0-b22b-86ce87f53d2c",
+      "name": "Edit Fields update"
+    },
+    {
+      "parameters": {
+        "collection": "nodes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        300
+      ],
+      "id": "603ab394-577d-4e14-b578-71ea1918def1",
+      "name": "MongoDB find all for update",
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36e1d431-f956-4061-bae8-4949592bfbbc",
+              "name": "version",
+              "value": "={{ $json.version + 1}} ",
+              "type": "number"
+            },
+            {
+              "id": "deda8772-3333-4ca8-bf87-1483e8ce8244",
+              "name": "credentials",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "c126daae-6629-4a44-9473-2d07c97efbd9",
+              "name": "version_date",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        300
+      ],
+      "id": "d013e828-9408-4a62-b82c-4d35f94892dd",
+      "name": "Edit Fields all update"
+    },
+    {
+      "parameters": {
+        "operation": "findOneAndUpdate",
+        "collection": "nodes",
+        "updateKey": "_id",
+        "fields": "version, version_date",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        200
+      ],
+      "id": "7539ccad-7551-42c4-b857-43dae5fe2997",
+      "name": "MongoDB find and update all",
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "findOneAndUpdate",
+        "collection": "nodes",
+        "updateKey": "_id",
+        "fields": "version, version_date",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        460
+      ],
+      "id": "ae0cb0df-0df1-4ab9-ab2f-f220eaef3b03",
+      "name": "MongoDB find and update all loop",
+      "alwaysOutputData": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "collection": "nodes",
+        "query": "{\"name\":\"code\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        -200
+      ],
+      "id": "c22d72da-abe7-4d63-baef-eace14879c77",
+      "name": "MongoDB delete",
+      "credentials": {
+        "mongoDb": {
+          "id": "YqpSLrNIaP0VIYHb",
+          "name": "MongoDB account node_db"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "MongoDB find all",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields insert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "MongoDB find query",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "MongoDB find all for update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields insert": {
+      "main": [
+        [
+          {
+            "node": "MongoDB insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB insert": {
+      "main": [
+        [
+          {
+            "node": "MongoDB delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "MongoDB find and update all loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB find all": {
+      "main": [
+        []
+      ]
+    },
+    "MongoDB find query": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields update": {
+      "main": [
+        [
+          {
+            "node": "MongoDB find and update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB find all for update": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields all update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields all update": {
+      "main": [
+        [
+          {
+            "node": "MongoDB find and update all",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB find and update all loop": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1c454954-476a-4f0d-b2d4-37831256962e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "GKFe6YvBR1hPoftc",
+  "tags": [
+    {
+      "createdAt": "2025-04-11T08:51:22.942Z",
+      "updatedAt": "2025-04-11T08:51:22.942Z",
+      "id": "6ZNK6ahoOEXGIRos",
+      "name": "Loop"
+    }
+  ]
+}
