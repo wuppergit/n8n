@@ -1,0 +1,160 @@
+{
+  "name": "03-Editor-Nodes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -40
+      ],
+      "id": "118a7dac-f32f-4815-8efe-1abe9f729f96",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5f6a3ec3-9ed4-4f52-850d-e290cbc0b5e6",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "803ef29b-fad7-4432-abfd-91208aca88aa",
+              "name": "code",
+              "value": "={{ $json.code }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        180,
+        -40
+      ],
+      "id": "8c34c31f-a70f-4481-8e64-07f6efaa86a0",
+      "name": "Edit Fields result",
+      "executeOnce": false,
+      "notesInFlow": true,
+      "onError": "continueRegularOutput",
+      "notes": "Zusammenfassen der Ergebniss"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c32aa5a-9657-4acc-ba35-dba3700a9d84",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "41ac0c25-4695-41e8-9a16-90a62002929d",
+              "name": "code",
+              "value": "={{ $json.code }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -60,
+        -120
+      ],
+      "id": "7948cc4c-40b8-42a4-879b-dcab9a11bbb0",
+      "name": "Edit Fields1",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "var elements = -1;\n // RangeError: Invalid array length\nlet arr = new Array(elements); \nreturn {};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -40
+      ],
+      "id": "ff457840-3a11-481c-80e1-e01911a86b42",
+      "name": "force error",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields result": {
+      "main": [
+        [
+          {
+            "node": "force error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "322427ec-96e7-4087-b06b-3be95f2229ac",
+  "meta": {
+    "instanceId": "3bc8ab9c59db2f22c3832c970f1e62277632f4f782dd45f31cd31a57b2e9877f"
+  },
+  "id": "YjpuxtSyOcqK0N4L",
+  "tags": []
+}
