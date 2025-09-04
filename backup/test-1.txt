@@ -1,3 +1,0 @@
-Test 1
-These are test data stored in local host file system
-o.k.?
